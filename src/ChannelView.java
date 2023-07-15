@@ -16,8 +16,10 @@ public class ChannelView {
     }
 
     public void addChannelButton(String channelName) {
+
         JButton channelButton = new JButton(channelName);
         channelButton.setPreferredSize(new Dimension(140, 60));
+
         channelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -25,13 +27,17 @@ public class ChannelView {
                 // Retrieve and display the program information for the selected channel
             }
         });
+
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1.0;
+
         constraints.gridwidth = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(1, 1, 1, 1);
+
         channelPanel.add(channelButton, constraints);
         frame.revalidate();
+
     }
 
     public JPanel getChannelPanel() {
