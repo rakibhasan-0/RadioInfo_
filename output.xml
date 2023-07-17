@@ -1,305 +1,120 @@
-<?xml version = "1.0" encoding = "utf-8" standalone="no"?>
-
-<sr>
-    
-  <copyright>Copyright Sveriges Radio 2023. All rights reserved.</copyright>
-    
-  <pagination>
-        
-    <page>1</page>
-        
-    <size>10</size>
-        
-    <totalhits>52</totalhits>
-        
-    <totalpages>6</totalpages>
-        
-    <nextpage>http://api.sr.se/v2/channels/?page=2</nextpage>
-      
-  </pagination>
-    
-  <channels>
-        
-    <channel id="132" name="P1">
-            
-      <image>https://static-cdn.sr.se/images/132/2186745_512_512.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/132/2186745_512_512.jpg</imagetemplate>
-            
-      <color>31a1bd</color>
-            
-      <tagline>Talat innehåll om samhälle, kultur och vetenskap. Kanalen erbjuder nyheter och aktualiteter, granskning och fördjupning men också livsåskådnings-och livsstilsprogram samt underhållning och upplevelser till exempel i form av teater.</tagline>
-            
-      <siteurl>https://sverigesradio.se/p1</siteurl>
-            
-      <liveaudio id="132">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/132.mp3</url>
-                
-        <statkey>/app/direkt/p1[k(132)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=132</scheduleurl>
-            
-      <channeltype>Rikskanal</channeltype>
-            
-      <xmltvid>p1.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="163" name="P2">
-            
-      <image>https://static-cdn.sr.se/images/163/2186754_512_512.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/163/2186754_512_512.jpg</imagetemplate>
-            
-      <color>ff5a00</color>
-            
-      <tagline>P2 är den klassiska musikkanalen som även erbjuder jazz samt folk- och världsmusik. Digitalt sänder vi musikprogram dygnet runt, i FM finns även program på andra språk än svenska.</tagline>
-            
-      <siteurl>https://sverigesradio.se/p2</siteurl>
-            
-      <liveaudio id="163">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/163.mp3</url>
-                
-        <statkey>/app/direkt/p2[k(163)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=163</scheduleurl>
-            
-      <channeltype>Rikskanal</channeltype>
-            
-      <xmltvid>p2.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="164" name="P3">
-            
-      <image>https://static-cdn.sr.se/images/164/2186756_512_512.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/164/2186756_512_512.jpg</imagetemplate>
-            
-      <color>19a972</color>
-            
-      <tagline>Kanalen för dig som gillar ny musik, livesänd radio och högkvalitativa poddar. Lyssna på P3 för populärkultur, samhällsjournalistik, musik och humor.</tagline>
-            
-      <siteurl>https://sverigesradio.se/p3</siteurl>
-            
-      <liveaudio id="164">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/164.mp3</url>
-                
-        <statkey>/app/direkt/p3[k(164)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=164</scheduleurl>
-            
-      <channeltype>Rikskanal</channeltype>
-            
-      <xmltvid>p3.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="213" name="P4 Blekinge">
-            
-      <image>https://static-cdn.sr.se/images/105/7e0c4da5-427c-4d88-9b9d-94a7b104eabb.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/105/7e0c4da5-427c-4d88-9b9d-94a7b104eabb.jpg</imagetemplate>
-            
-      <color>c31eaa</color>
-            
-      <tagline>I P4 Blekinge hör du lokala nyheter, lokala aktualiteter och lokal kultur. Du bjuds på en heltäckande, angelägen kanal där du bor.</tagline>
-            
-      <siteurl>https://sverigesradio.se/blekinge/</siteurl>
-            
-      <liveaudio id="213">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/213.mp3</url>
-                
-        <statkey>/app/direkt/p4 blekinge[k(213)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=213</scheduleurl>
-            
-      <channeltype>Lokal kanal</channeltype>
-            
-      <xmltvid>p4blek.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="223" name="P4 Dalarna">
-            
-      <image>https://static-cdn.sr.se/images/161/37b7d118-6d38-4a7d-87fd-216caf6cb7c6.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/161/37b7d118-6d38-4a7d-87fd-216caf6cb7c6.jpg</imagetemplate>
-            
-      <color>c31eaa</color>
-            
-      <tagline>P4 Dalarna gör angelägen lokal radio för dalfolket, på plats när det händer. I våra populära program och prisbelönta nyheter hör du ämnen som berör, alltid dagsaktuella och alltid med Dalarna i centrum.</tagline>
-            
-      <siteurl>https://sverigesradio.se/dalarna/</siteurl>
-            
-      <liveaudio id="223">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/223.mp3</url>
-                
-        <statkey>/app/direkt/p4 dalarna[k(223)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=223</scheduleurl>
-            
-      <channeltype>Lokal kanal</channeltype>
-            
-      <xmltvid>p4dala.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="205" name="P4 Gotland">
-            
-      <image>https://static-cdn.sr.se/images/94/99c16fdf-e9b7-4232-ba4b-223f0f8e4e79.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/94/99c16fdf-e9b7-4232-ba4b-223f0f8e4e79.jpg</imagetemplate>
-            
-      <color>c31eaa</color>
-            
-      <tagline>P4 Gotland bevakar det som händer på och omkring Gotland, med nyheter, intervjuer och reportage.</tagline>
-            
-      <siteurl>https://sverigesradio.se/gotland/</siteurl>
-            
-      <liveaudio id="205">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/205.mp3</url>
-                
-        <statkey>/app/direkt/p4 gotland[k(205)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=205</scheduleurl>
-            
-      <channeltype>Lokal kanal</channeltype>
-            
-      <xmltvid>p4gotl.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="210" name="P4 Gävleborg">
-            
-      <image>https://static-cdn.sr.se/images/99/aae78c01-297f-495b-ab93-ec8eab92c0ea.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/99/aae78c01-297f-495b-ab93-ec8eab92c0ea.jpg</imagetemplate>
-            
-      <color>c31eaa</color>
-            
-      <tagline>I P4 Gävleborg hör du lokala nyheter, lokala aktualiteter och lokal kultur. Du bjuds på en heltäckande, angelägen kanal där du bor.</tagline>
-            
-      <siteurl>https://sverigesradio.se/gavleborg/</siteurl>
-            
-      <liveaudio id="210">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/210.mp3</url>
-                
-        <statkey>/app/direkt/p4 gävleborg[k(210)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=210</scheduleurl>
-            
-      <channeltype>Lokal kanal</channeltype>
-            
-      <xmltvid>p4gavl.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="212" name="P4 Göteborg">
-            
-      <image>https://static-cdn.sr.se/images/104/0904f0e7-53d3-4d22-b100-0c417b5db972.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/104/0904f0e7-53d3-4d22-b100-0c417b5db972.jpg</imagetemplate>
-            
-      <color>c31eaa</color>
-            
-      <tagline>Sveriges Radio P4 Göteborg ger dig lokala nyheter - i radion och på webben.</tagline>
-            
-      <siteurl>https://sverigesradio.se/goteborg/</siteurl>
-            
-      <liveaudio id="212">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/212.mp3</url>
-                
-        <statkey>/app/direkt/p4 göteborg[k(212)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=212</scheduleurl>
-            
-      <channeltype>Lokal kanal</channeltype>
-            
-      <xmltvid>p4gbg.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="220" name="P4 Halland">
-            
-      <image>https://static-cdn.sr.se/images/128/df8f9818-c563-431f-930b-be1a49705008.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/128/df8f9818-c563-431f-930b-be1a49705008.jpg</imagetemplate>
-            
-      <color>c31eaa</color>
-            
-      <tagline>P4 Halland erbjuder lokala nyheter och aktualiteter.</tagline>
-            
-      <siteurl>https://sverigesradio.se/halland/</siteurl>
-            
-      <liveaudio id="220">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/220.mp3</url>
-                
-        <statkey>/app/direkt/p4 halland[k(220)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=220</scheduleurl>
-            
-      <channeltype>Lokal kanal</channeltype>
-            
-      <xmltvid>p4hall.sr.se</xmltvid>
-          
-    </channel>
-        
-    <channel id="200" name="P4 Jämtland">
-            
-      <image>https://static-cdn.sr.se/images/78/3f969001-3c0d-46c0-a3a6-30b44ef999c0.jpg?preset=api-default-square</image>
-            
-      <imagetemplate>https://static-cdn.sr.se/images/78/3f969001-3c0d-46c0-a3a6-30b44ef999c0.jpg</imagetemplate>
-            
-      <color>c31eaa</color>
-            
-      <tagline>I P4 Jämtland hör du lokala nyheter, aktualiteter, väderprognoser, sport och kultur. </tagline>
-            
-      <siteurl>https://sverigesradio.se/jamtland/</siteurl>
-            
-      <liveaudio id="200">
-                
-        <url>http://sverigesradio.se/topsy/direkt/srapi/200.mp3</url>
-                
-        <statkey>/app/direkt/p4 jämtland[k(200)]</statkey>
-              
-      </liveaudio>
-            
-      <scheduleurl>http://api.sr.se/v2/scheduledepisodes?channelid=200</scheduleurl>
-            
-      <channeltype>Lokal kanal</channeltype>
-            
-      <xmltvid>p4jmtl.sr.se</xmltvid>
-          
-    </channel>
-      
-  </channels>
-  
-</sr>
+<root>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;sr&gt;
+  &lt;copyright&gt;Copyright Sveriges Radio 2023. All rights reserved.&lt;/copyright&gt;
+  &lt;pagination&gt;
+    &lt;page&gt;1&lt;/page&gt;
+    &lt;size&gt;10&lt;/size&gt;
+    &lt;totalhits&gt;93&lt;/totalhits&gt;
+    &lt;totalpages&gt;10&lt;/totalpages&gt;
+    &lt;nextpage&gt;http://api.sr.se/v2/scheduledepisodes?channelid=132&amp;amp;page=2&lt;/nextpage&gt;
+  &lt;/pagination&gt;
+  &lt;schedule&gt;
+    &lt;scheduledepisode&gt;
+      &lt;episodeid&gt;2200443&lt;/episodeid&gt;
+      &lt;title&gt;Ekot senaste nytt&lt;/title&gt;
+      &lt;description&gt;Senaste nyheterna varje timme från Ekot.&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-16T22:00:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-16T22:02:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;5380&quot; name=&quot;Ekot senaste nytt&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+      &lt;imageurl&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg?preset=api-default-square&lt;/imageurl&gt;
+      &lt;imageurltemplate&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg&lt;/imageurltemplate&gt;
+      &lt;photographer /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;episodeid&gt;2194062&lt;/episodeid&gt;
+      &lt;title&gt;Bödlarna&lt;/title&gt;
+      &lt;description&gt;En resa i svenska bödlars spår.&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-16T22:02:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-16T22:30:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;5548&quot; name=&quot;Bödlarna&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+      &lt;imageurl&gt;https://static-cdn.sr.se/images/5548/287fcc74-7eb7-40a9-ae22-6fd188fbbdaa.jpg?preset=api-default-square&lt;/imageurl&gt;
+      &lt;imageurltemplate&gt;https://static-cdn.sr.se/images/5548/287fcc74-7eb7-40a9-ae22-6fd188fbbdaa.jpg&lt;/imageurltemplate&gt;
+      &lt;photographer /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;title&gt;Klassiska krysset&lt;/title&gt;
+      &lt;description&gt;En lekfull bokstavsresa rätt in i musikens hemligheter.&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-16T22:30:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-16T23:00:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;0&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;episodeid&gt;2200445&lt;/episodeid&gt;
+      &lt;title&gt;Ekot senaste nytt&lt;/title&gt;
+      &lt;description&gt;Senaste nyheterna varje timme från Ekot.&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-16T23:00:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-16T23:02:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;5380&quot; name=&quot;Ekot senaste nytt&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+      &lt;imageurl&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg?preset=api-default-square&lt;/imageurl&gt;
+      &lt;imageurltemplate&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg&lt;/imageurltemplate&gt;
+      &lt;photographer /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;title&gt;P3 ID&lt;/title&gt;
+      &lt;description&gt;Starka berättelser om vår tids mest spännande personer. Hör historien bakom kändisskapet. &lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-16T23:02:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-17T00:00:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;5343&quot; name=&quot;P3 ID&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;episodeid&gt;2200446&lt;/episodeid&gt;
+      &lt;title&gt;Ekot senaste nytt&lt;/title&gt;
+      &lt;description&gt;Senaste nyheterna varje timme från Ekot.&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-17T00:00:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-17T00:02:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;5380&quot; name=&quot;Ekot senaste nytt&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+      &lt;imageurl&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg?preset=api-default-square&lt;/imageurl&gt;
+      &lt;imageurltemplate&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg&lt;/imageurltemplate&gt;
+      &lt;photographer /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;title&gt;Radiokorrespondenterna&lt;/title&gt;
+      &lt;subtitle&gt;: Ryssland&lt;/subtitle&gt;
+      &lt;description&gt;I Radiokorrespondenterna Ryssland hör du Sveriges Radios Rysslandskorrespondenter Johanna Melén och Maria Persson Löfgren tillsammans med experter på Ryssland och Ukraina. Programledare: Fredrik Wadström&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-17T00:02:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-17T00:32:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;2946&quot; name=&quot;Radiokorrespondenterna Ryssland&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;episodeid&gt;2169111&lt;/episodeid&gt;
+      &lt;title&gt;Hund och katt&lt;/title&gt;
+      &lt;subtitle&gt;: Veterinärskräck&lt;/subtitle&gt;
+      &lt;description&gt;Om moral och etik och hur vi kommunicerar med våra bästa vänner husdjuren. Programledare för Hund och Katt är Agneta Furvik. &lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-17T00:32:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-17T01:00:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;5487&quot; name=&quot;Hund och Katt&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+      &lt;imageurl&gt;https://static-cdn.sr.se/images/5487/6ab38484-63f4-4ac7-ac0c-a6490bbccfff.jpg?preset=api-default-square&lt;/imageurl&gt;
+      &lt;imageurltemplate&gt;https://static-cdn.sr.se/images/5487/6ab38484-63f4-4ac7-ac0c-a6490bbccfff.jpg&lt;/imageurltemplate&gt;
+      &lt;photographer&gt;Alexander Donka/Sveriges Radio. &lt;/photographer&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;episodeid&gt;2200447&lt;/episodeid&gt;
+      &lt;title&gt;Ekot senaste nytt&lt;/title&gt;
+      &lt;description&gt;Senaste nyheterna varje timme från Ekot.&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-17T01:00:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-17T01:02:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;5380&quot; name=&quot;Ekot senaste nytt&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+      &lt;imageurl&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg?preset=api-default-square&lt;/imageurl&gt;
+      &lt;imageurltemplate&gt;https://static-cdn.sr.se/images/5380/a7898d6c-786f-4fcb-b68e-c5f56f4b3bef.jpg&lt;/imageurltemplate&gt;
+      &lt;photographer /&gt;
+    &lt;/scheduledepisode&gt;
+    &lt;scheduledepisode&gt;
+      &lt;title&gt;P1 Dokumentär&lt;/title&gt;
+      &lt;description&gt;Berättelser från verkligheten.&lt;/description&gt;
+      &lt;starttimeutc&gt;2023-07-17T01:02:00Z&lt;/starttimeutc&gt;
+      &lt;endtimeutc&gt;2023-07-17T01:55:00Z&lt;/endtimeutc&gt;
+      &lt;program id=&quot;909&quot; name=&quot;P1 Dokumentär&quot; /&gt;
+      &lt;channel id=&quot;132&quot; name=&quot;P1&quot; /&gt;
+    &lt;/scheduledepisode&gt;
+  &lt;/schedule&gt;
+&lt;/sr&gt;
+</root>
