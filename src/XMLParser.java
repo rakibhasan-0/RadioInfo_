@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+
 public class XMLParser {
     private final ArrayList<Channel> channels;
 
@@ -86,7 +87,6 @@ public class XMLParser {
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
-                //System.err.println("URL not found: " + urlString);
                 return null;
             }
             return url;
@@ -125,4 +125,5 @@ public class XMLParser {
     public ArrayList<Channel> getChannels() {
         return channels;
     }
+
 }

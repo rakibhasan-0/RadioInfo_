@@ -5,9 +5,9 @@ public class MenuBarView {
     JPanel menuPanel;
     JMenuBar menuBar;
 
-    public MenuBarView(){
+    public MenuBarView(JFrame frame){
 
-        frame = new JFrame("Radio Info");
+        this.frame = frame;
         menuBar = new JMenuBar();
 
         JMenu channel = new JMenu("Channel");

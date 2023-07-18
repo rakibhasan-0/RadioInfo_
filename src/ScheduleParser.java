@@ -7,76 +7,102 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ScheduleParser {
-    private final Map<Channel, List<Schedule>> channelsInfo = new HashMap<>();
+    private final Channel channel;
+    private final Cache cache;
 
-    public ScheduleParser() throws IOException, ParserConfigurationException, SAXException {
-        XMLParser xmlParser = new XMLParser();
-        List<Channel> channels = xmlParser.getChannels();
-        fetchChannelsInfo(channels);
+    public ScheduleParser(Channel channel, Cache cache) {
+        this.channel = channel;
+        this.cache = cache;
     }
 
-    private void fetchChannelsInfo(List<Channel> channels) throws IOException, ParserConfigurationException, SAXException {
-        for (Channel channel : channels) {
-            URL channelURL = channel.getScheduleURL();
-            if (channelURL != null ) {
-                try {
-                    List<Schedule> schedules = fetchSchedules(channelURL.toString());
-                    if (schedules.isEmpty()) {
-                        String missingScheduleMessage = "Program schedule missing for channel: " + channel.getChannelName();
-                        schedules.add(new Schedule(missingScheduleMessage, null, null));
-                    }
-                    channelsInfo.put(channel, schedules);
-                } catch (IOException e) {
-                    System.err.println("Error fetching schedule for channel: " + channel.getChannelName());
-                    e.printStackTrace();
-                }
-            }
+    public List<Schedule> fetchSchedules() {
+        List<Schedule> schedules = cache.getSchedules(channel);
+
+        if (schedules != null) {
+            System.out.println("Fetching schedules from cache for channel: " + channel.getChannelName());
+            return schedules;
         }
-    }
 
-    public List<Schedule> fetchSchedules(String url) throws IOException, ParserConfigurationException, SAXException {
-        List<Schedule> schedules = new ArrayList<>();
+        schedules = new ArrayList<>();
+        URL scheduleURL = channel.getScheduleURL();
+
+        if (scheduleURL == null) {
+            System.out.println("Channel '" + channel.getChannelName() + "' has no schedule information.");
+            return schedules;
+        }
+
         int currentPage = 1;
         int totalPages = Integer.MAX_VALUE;
 
-        while (currentPage <= totalPages) {
-            String apiUrl = url + "&page=" + currentPage;
-            Document document = fetchXmlDocument(apiUrl);
+        try {
+            while (currentPage <= totalPages) {
+                URL pageURL = new URL(scheduleURL + "&page=" + currentPage);
+                InputStream inputStream = pageURL.openStream();
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document = builder.parse(inputStream);
+                Element root = document.getDocumentElement();
 
-            Element root = document.getDocumentElement();
-            totalPages = getTotalPages(root);
-
-            NodeList scheduleNodes = root.getElementsByTagName("scheduledepisode");
-            for (int i = 0; i < scheduleNodes.getLength(); i++) {
-                Element scheduleElement = (Element) scheduleNodes.item(i);
-                Schedule schedule = parseScheduleElement(scheduleElement);
-                if (schedule != null) {
-                    schedules.add(schedule);
+                if (currentPage == 1) {
+                    totalPages = getTotalPages(root);
                 }
+
+                NodeList scheduleNodes = root.getElementsByTagName("scheduledepisode");
+                for (int i = 0; i < scheduleNodes.getLength(); i++) {
+                    Element scheduleElement = (Element) scheduleNodes.item(i);
+                    Schedule schedule = parseScheduleElement(scheduleElement);
+                    if (schedule != null) {
+                        schedules.add(schedule);
+                    }
+                }
+
+                currentPage++;
+                inputStream.close();
             }
-            currentPage++;
+
+            cache.addSchedules(channel, schedules); // Cache the schedules
+
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
         }
 
         return schedules;
-    }
-
-    private Document fetchXmlDocument(String url) throws IOException, ParserConfigurationException, SAXException {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document;
-        try (InputStream inputStream = new URL(url).openStream()) {
-            document = builder.parse(inputStream);
-        }
-        return document;
     }
 
     private int getTotalPages(Element root) {
@@ -99,6 +125,10 @@ public class ScheduleParser {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
             startTime = LocalDateTime.parse(startTimestr, formatter);
             endTime = LocalDateTime.parse(endTimestr, formatter);
+            // Convert to Swedish local time
+            ZoneId swedishZoneId = ZoneId.of("Europe/Stockholm");
+            startTime = startTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(swedishZoneId).toLocalDateTime();
+            endTime = endTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(swedishZoneId).toLocalDateTime();
         } catch (Exception e) {
             System.err.println("Error parsing date: " + e.getMessage());
         }
@@ -116,9 +146,5 @@ public class ScheduleParser {
     private String getTextContent(Element element, String tagName) {
         Element childElement = (Element) element.getElementsByTagName(tagName).item(0);
         return childElement != null ? childElement.getTextContent() : null;
-    }
-
-    public Map<Channel, List<Schedule>> getChannelsInfo() {
-        return channelsInfo;
     }
 }
