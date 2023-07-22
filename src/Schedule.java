@@ -21,9 +21,6 @@ public class Schedule {
         return endTime;
     }
 
-
-
-
     String getProgramName(){
         return programName;
     }

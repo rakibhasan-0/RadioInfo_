@@ -40,4 +40,5 @@ public class ChannelView {
     public JScrollPane getScrollChannel() {
         return scrollChannel;
     }
+
 }

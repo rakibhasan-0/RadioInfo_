@@ -1,8 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-public class RadioInfo {
 
+public class RadioInfo {
     public RadioInfo() {
         JFrame frame = new JFrame("Radio Info");
 
@@ -14,19 +14,26 @@ public class RadioInfo {
 
         Cache cache = new Cache();
 
-        List<Channel> channels = xmlParser.getChannels();
-        Controller controller = new Controller(channelView, programView, channels);
+        xmlParser.execute(); // Start the XMLParser task
 
-        JPanel menuPanel = new JPanel();
-        menuPanel.add(channelView.getScrollChannel());
-        menuPanel.add(programView.getProgramScrollPane());
-        menuPanel.setLayout(new GridLayout(1, 2));
+        // Wait for the XMLParser task to finish
+        try {
+            List<Channel> channels = xmlParser.get();
+            Controller controller = new Controller(channelView, programView, channels);
 
-        frame.setJMenuBar(menuBar.getMenuBar());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(900, 500);
-        frame.add(menuPanel, BorderLayout.CENTER);
-        frame.setVisible(true);
+            JPanel menuPanel = new JPanel();
+            menuPanel.add(channelView.getScrollChannel());
+            menuPanel.add(programView.getProgramScrollPane());
+            menuPanel.setLayout(new GridLayout(1, 2));
+
+            frame.setJMenuBar(menuBar.getMenuBar());
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(900, 500);
+            frame.add(menuPanel, BorderLayout.CENTER);
+            frame.setVisible(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

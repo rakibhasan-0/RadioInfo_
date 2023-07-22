@@ -1,8 +1,8 @@
+import javax.swing.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,14 +13,29 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
-
-public class XMLParser {
+public class XMLParser extends SwingWorker<List<Channel>, Void> {
     private final ArrayList<Channel> channels;
 
     public XMLParser() {
         channels = new ArrayList<>();
+    }
+
+    @Override
+    protected List<Channel> doInBackground() throws Exception {
         fetchChannelsData();
+        return channels;
+    }
+
+    @Override
+    protected void done() {
+        try {
+            List<Channel> fetchedChannels = get();
+            // Notify any observers if needed
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void fetchChannelsData() {
@@ -125,5 +140,4 @@ public class XMLParser {
     public ArrayList<Channel> getChannels() {
         return channels;
     }
-
 }
