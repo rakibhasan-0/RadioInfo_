@@ -1,3 +1,4 @@
+// ScheduleParser class
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -63,17 +64,13 @@ public class ScheduleParser {
                         schedules.add(schedule);
                     }
                 }
-
                 currentPage++;
                 inputStream.close();
             }
-
             cache.addSchedules(channel, schedules); // Cache the schedules
-
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
-
         return schedules;
     }
 

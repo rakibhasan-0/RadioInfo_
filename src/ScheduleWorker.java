@@ -1,8 +1,8 @@
 import javax.swing.*;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class ScheduleWorker extends SwingWorker<List<Schedule>, Void> {
+public class ScheduleWorker extends SwingWorker<HashMap<Channel, List<Schedule>>, Void> {
     private final List<Channel> channels;
     private final Cache cache;
 
@@ -11,29 +11,23 @@ public class ScheduleWorker extends SwingWorker<List<Schedule>, Void> {
         this.cache = cache;
     }
 
-
     @Override
-    protected List<Schedule> doInBackground() throws Exception {
-        List<Schedule> allSchedules = new ArrayList<>();
+    protected HashMap<Channel, List<Schedule>> doInBackground() {
+        HashMap<Channel, List<Schedule>> schedulesMap = new HashMap<>();
         for (Channel channel : channels) {
             ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
             List<Schedule> schedules = scheduleParser.fetchSchedules();
-            allSchedules.addAll(schedules);
+            schedulesMap.put(channel, schedules);
         }
-        return allSchedules;
+        return schedulesMap;
     }
-
 
     @Override
     protected void done() {
         try {
-            List<Schedule> fetchedSchedules = get();
-            // Notify any observers if needed
+            HashMap<Channel, List<Schedule>> fetchedSchedulesMap = get();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
-
 }

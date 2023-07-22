@@ -28,7 +28,7 @@ public class MenuBarView {
         menuBar.add(channel);
         menuBar.add(schedule);
 
-        timePanel = new JPanel(new GridLayout(1, 1));
+        timePanel = new JPanel(new GridLayout(1, 2));
         currentTimeLabel = new JLabel();
         lastUpdatedLabel = new JLabel();
 

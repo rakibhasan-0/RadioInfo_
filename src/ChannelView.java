@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class ChannelView {
     private JPanel channelPanel;
@@ -41,4 +42,17 @@ public class ChannelView {
         return scrollChannel;
     }
 
+    // Method to update the list of channels in the view
+    public void updateChannels(List<Channel> channels) {
+        channelPanel.removeAll(); // Clear existing channels
+
+        for (Channel channel : channels) {
+            JButton button = new JButton(channel.getChannelName());
+            button.setIcon(new ImageIcon(channel.getChannelImage()));
+            addChannelButton(button);
+        }
+
+        channelPanel.revalidate();
+        channelPanel.repaint();
+    }
 }

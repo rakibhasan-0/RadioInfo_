@@ -2,7 +2,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Cache {
-    private final HashMap<Channel, List<Schedule>> cache = new HashMap<Channel, List<Schedule>>();
+    private final HashMap<Channel, List<Schedule>> cache = new HashMap<>();
 
     public Cache() {
     }
