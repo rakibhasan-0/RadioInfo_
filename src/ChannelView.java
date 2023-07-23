@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ChannelView {
+public class ChannelView{
     private JPanel channelPanel;
     private JFrame frame;
     private JScrollPane scrollChannel;
@@ -18,7 +18,7 @@ public class ChannelView {
         constraints.gridwidth = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(1, 1, 1, 1);
 
-        frame.revalidate();
+        frame.add(scrollChannel, BorderLayout.WEST);
         scrollChannel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
     }
 

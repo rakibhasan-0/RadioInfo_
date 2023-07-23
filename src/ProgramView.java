@@ -1,38 +1,34 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.time.format.DateTimeFormatter;
+import java.awt.*;
 import java.util.List;
 
 public class ProgramView {
-    private JFrame frame;
-    private JScrollPane programScrollPane;
     private JTable programTable;
-    private DefaultTableModel programTableModel;
+    private JScrollPane programScrollPane;
 
     public ProgramView(JFrame frame) {
-        this.frame = frame;
-        String[] cols = {"Program", "Start", "End"};
-        programTableModel = new DefaultTableModel(cols, 0);
-        programTable = new JTable(programTableModel);
+        programTable = new JTable();
         programScrollPane = new JScrollPane(programTable);
+
+        frame.add(programScrollPane, BorderLayout.CENTER);
+    }
+
+    public void populateProgramTable(List<Schedule> schedules) {
+        String[] columnNames = {"Program Name", "Start Time", "End Time"};
+        Object[][] data = new Object[schedules.size()][3];
+
+        for (int i = 0; i < schedules.size(); i++) {
+            Schedule schedule = schedules.get(i);
+            data[i][0] = schedule.getProgramName();
+            data[i][1] = schedule.getStartTime();
+            data[i][2] = schedule.getEndTime();
+        }
+
+        programTable.setModel(new DefaultTableModel(data, columnNames));
     }
 
     public JScrollPane getProgramScrollPane() {
         return programScrollPane;
-    }
-
-    public void populateProgramTable(List<Schedule> schedules) {
-        programTableModel.setRowCount(0); // Clear previous data
-
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm"); // Format for time display
-
-        for (Schedule schedule : schedules) {
-            String[] rowData = {
-                    schedule.getProgramName(),
-                    schedule.getStartTime().format(timeFormatter),
-                    schedule.getEndTime().format(timeFormatter)
-            };
-            programTableModel.addRow(rowData);
-        }
     }
 }

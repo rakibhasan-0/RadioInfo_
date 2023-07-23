@@ -23,7 +23,6 @@ public class RadioInfo {
         frame.setSize(900, 500);
         frame.add(menuPanel, BorderLayout.CENTER);
         frame.setVisible(true);
-
     }
 
     public static void main(String[] args) {

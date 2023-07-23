@@ -6,7 +6,7 @@ public class ScheduleWorker extends SwingWorker<HashMap<Channel, List<Schedule>>
     private final List<Channel> channels;
     private final Cache cache;
 
-    public ScheduleWorker(List<Channel> channels, Cache cache) {
+    public ScheduleWorker(List<Channel> channels, Cache cache){
         this.channels = channels;
         this.cache = cache;
     }

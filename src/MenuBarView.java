@@ -11,7 +11,7 @@ public class MenuBarView {
     private JLabel currentTimeLabel;
     private JLabel lastUpdatedLabel;
     private JPanel timePanel;
-    private LocalDateTime lastUpdatedTime; // Store the last updated time
+    private LocalDateTime lastUpdateTime;
 
     public MenuBarView(JFrame frame) {
         this.frame = frame;
@@ -84,11 +84,26 @@ public class MenuBarView {
     }
 
     public void updateLastUpdatedTime() {
-        lastUpdatedTime = LocalDateTime.now();
-        setLastUpdatedLabel(lastUpdatedTime);
+        lastUpdateTime = LocalDateTime.now();
+        setLastUpdatedLabel(lastUpdateTime);
     }
 
     public void updateCurrentTimeLabel() {
         setCurrentTimeLabel(LocalDateTime.now());
+    }
+
+    private boolean isAutomaticUpdateNeeded() {
+        if (lastUpdateTime == null) {
+            // If the last update time is not set, perform automatic update
+            return true;
+        }
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime nextUpdate = lastUpdateTime.plusHours(1); // One hour from the last update time
+        return currentTime.isAfter(nextUpdate);
+    }
+
+    public LocalDateTime getLastUpdateTime() {
+        return lastUpdateTime;
     }
 }
