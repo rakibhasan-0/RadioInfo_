@@ -11,6 +11,7 @@ public class MenuBarView {
     private JLabel currentTimeLabel;
     private JLabel lastUpdatedLabel;
     private JPanel timePanel;
+    private JLabel selectedChannelLabel;
     private LocalDateTime lastUpdateTime;
 
     public MenuBarView(JFrame frame) {
@@ -22,6 +23,7 @@ public class MenuBarView {
 
         JMenuItem updateChannel = new JMenuItem("Update");
         JMenuItem updateSchedule = new JMenuItem("Update");
+
 
         channel.add(updateChannel);
         schedule.add(updateSchedule);
@@ -40,6 +42,9 @@ public class MenuBarView {
         frame.setSize(500, 500);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        selectedChannelLabel = new JLabel("Selected Channel: ");
+        timePanel.add(selectedChannelLabel);
 
         // Start updating the current time label every second
         Timer timer = new Timer(1000, new ActionListener() {
@@ -92,18 +97,11 @@ public class MenuBarView {
         setCurrentTimeLabel(LocalDateTime.now());
     }
 
-    private boolean isAutomaticUpdateNeeded() {
-        if (lastUpdateTime == null) {
-            // If the last update time is not set, perform automatic update
-            return true;
-        }
-
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime nextUpdate = lastUpdateTime.plusHours(1); // One hour from the last update time
-        return currentTime.isAfter(nextUpdate);
-    }
-
     public LocalDateTime getLastUpdateTime() {
         return lastUpdateTime;
+    }
+
+    public void setSelectedChannelLabel(String channelName) {
+        selectedChannelLabel.setText("Selected Channel: " + channelName);
     }
 }

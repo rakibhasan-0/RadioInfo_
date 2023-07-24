@@ -4,7 +4,6 @@ import java.util.List;
 public class Cache {
     private final HashMap<Channel, List<Schedule>> cache = new HashMap<>();
     private Channel selectedChannel;
-    private long lastUpdatedTime;
 
     public Cache() {
     }
@@ -33,7 +32,14 @@ public class Cache {
         return selectedChannel;
     }
 
-    public long getLastUpdatedTime() {
-        return lastUpdatedTime;
+    public void clearCacheForAChannel(Channel channel){
+        if(channel != null){
+            cache.remove(channel);
+        }
     }
+
+    public boolean isEmpty(){
+        return cache.isEmpty();
+    }
+
 }
