@@ -23,6 +23,7 @@ public class ChannelView{
     }
 
     public void addChannelButton(JButton channelButton) {
+
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1.0;
@@ -36,6 +37,12 @@ public class ChannelView{
 
     public JPanel getChannelPanel() {
         return channelPanel;
+    }
+
+    public void clearChannelButtons(){
+        channelPanel.removeAll();
+        channelPanel.revalidate();
+        channelPanel.repaint();
     }
 
     public JScrollPane getScrollChannel() {

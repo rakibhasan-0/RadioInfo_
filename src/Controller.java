@@ -9,8 +9,7 @@ public class Controller {
     private Channel selectedChannel;
     private Timer automaticUpdateTimer;
 
-    public Controller(ChannelView channelView, ProgramView programView, MenuBarView menuBarView){
-
+    public Controller(ChannelView channelView, ProgramView programView, MenuBarView menuBarView) {
         this.channelView = channelView;
         this.programView = programView;
         this.menuBarView = menuBarView;
@@ -21,48 +20,27 @@ public class Controller {
 
         // Check if channels are available
         if (channels != null && !channels.isEmpty()) {
-           // System.out.println("Channels fetched successfully!");
             // Set up channel buttons and action listeners
-            for (Channel channel : channels) {
-                JButton button = new JButton(channel.getChannelName());
-                button.setIcon(new ImageIcon(channel.getChannelImage()));
-                button.addActionListener(e -> {
-                    selectedChannel = channel;
-                    ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
-                    List<Schedule> schedules = scheduleParser.fetchSchedules();
-                    programView.populateProgramTable(schedules);
-                    // TODO: check if channel things get updated properly or not.
-                    // Selected channel's name should be visible.
-                    menuBarView.setSelectedChannelLabel(channel.getChannelName());
-                });
-                channelView.addChannelButton(button);
-            }
+            setupChannelButtons(channels);
 
             // Action listener for the "Update Channel" menu item
             menuBarView.addUpdateChannelListener(e -> {
-                //System.out.println("hello world");
                 // Clear the cache which has stored.
                 cache.clearCache();
                 // Fetch channels from the server
                 List<Channel> updatedChannels = fetchChannelsFromXML();
-                System.out.println(channels.isEmpty());
 
-                for (Channel channel : updatedChannels) {
-                    JButton button = new JButton(channel.getChannelName());
-                    button.setIcon(new ImageIcon(channel.getChannelImage()));
-                    button.addActionListener(e1 -> {
-                        this.selectedChannel = channel;
-                        ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
-                        List<Schedule> schedules = scheduleParser.fetchSchedules();
-                        programView.populateProgramTable(schedules);
-                        // TODO: check if channel things get updated properly or not.
-                        // Selected channel's name should be visible.
-                        menuBarView.setSelectedChannelLabel(channel.getChannelName());
-                    });
-                    channelView.addChannelButton(button);
-                }
+                // Update the channel buttons
+                setupChannelButtons(updatedChannels);
+
                 // Update the last updated time in the panel
                 menuBarView.updateLastUpdatedTime();
+
+                // Stop the automatic updates timer
+                if (automaticUpdateTimer != null && automaticUpdateTimer.isRunning()) {
+                    automaticUpdateTimer.stop();
+                }
+
                 // Start automatic updates again after manual update
                 startAutomaticUpdates();
             });
@@ -91,10 +69,34 @@ public class Controller {
                 if (automaticUpdateTimer != null && automaticUpdateTimer.isRunning()) {
                     automaticUpdateTimer.stop();
                 }
+
+                // Start automatic updates again after manual update
+                startAutomaticUpdates();
             });
+
             // Start automatic updates initially
             startAutomaticUpdates();
         }
+    }
+
+    private void setupChannelButtons(List<Channel> channels) {
+        channelView.clearChannelButtons();
+        for (Channel channel : channels) {
+            JButton button = new JButton(channel.getChannelName());
+            button.setIcon(new ImageIcon(channel.getChannelImage()));
+            button.addActionListener(e -> updateProgramTable(channel));
+            channelView.addChannelButton(button);
+        }
+    }
+
+    private void updateProgramTable(Channel channel) {
+        selectedChannel = channel;
+        ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
+        List<Schedule> schedules = scheduleParser.fetchSchedules();
+        programView.populateProgramTable(schedules);
+        // TODO: check if channel things get updated properly or not.
+        // Selected channel's name should be visible.
+        menuBarView.setSelectedChannelLabel(channel.getChannelName());
     }
 
     private void startAutomaticUpdates() {
@@ -108,20 +110,9 @@ public class Controller {
                 // Fetch channels from the server
                 List<Channel> updatedChannels = fetchChannelsFromXML();
 
-                for (Channel channel : updatedChannels) {
-                    JButton button = new JButton(channel.getChannelName());
-                    button.setIcon(new ImageIcon(channel.getChannelImage()));
-                    button.addActionListener(e1 -> {
-                        this.selectedChannel = channel;
-                        ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
-                        List<Schedule> schedules = scheduleParser.fetchSchedules();
-                        programView.populateProgramTable(schedules);
-                        // TODO: check if channel things get updated properly or not.
-                        // Selected channel's name should be visible.
-                        menuBarView.setSelectedChannelLabel(channel.getChannelName());
-                    });
-                    channelView.addChannelButton(button);
-                }
+                // Update the channel buttons
+                setupChannelButtons(updatedChannels);
+
                 // Update the last updated time in the panel
                 menuBarView.updateLastUpdatedTime();
             });
