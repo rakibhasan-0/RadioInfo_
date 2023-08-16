@@ -1,28 +1,39 @@
-import java.time.LocalDateTime;
+import javax.swing.*;
+import java.time.LocalTime;
 
 public class Schedule {
     private final String programName;
-    private final LocalDateTime startTime;
-    private final LocalDateTime endTime;
+    private final String description;
+    private final String imageUrl;
+    private final LocalTime startTime;
+    private final LocalTime endTime;
+    private JButton showMoreButton;
 
-
-    public Schedule(String programName, LocalDateTime startTime, LocalDateTime endTime){
+    public Schedule(String programName, String description, String imageUrl, LocalTime startTime, LocalTime endTime) {
         this.programName = programName;
+        this.description = description;
+        this.imageUrl = imageUrl;
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-
-    LocalDateTime getStartTime(){
+    public LocalTime getStartTime() {
         return startTime;
     }
 
-    LocalDateTime getEndTime(){
+    public LocalTime getEndTime() {
         return endTime;
     }
 
-    String getProgramName(){
+    public String getProgramName() {
         return programName;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }

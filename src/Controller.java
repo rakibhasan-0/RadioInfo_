@@ -1,4 +1,10 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class Controller {
@@ -20,61 +26,8 @@ public class Controller {
 
         // Check if channels are available
         if (channels != null && !channels.isEmpty()) {
-            // Set up channel buttons and action listeners
             setupChannelButtons(channels);
-
-            // Action listener for the "Update Channel" menu item
-            menuBarView.addUpdateChannelListener(e -> {
-                // Clear the cache which has stored.
-                cache.clearCache();
-                // Fetch channels from the server
-                List<Channel> updatedChannels = fetchChannelsFromXML();
-
-                // Update the channel buttons
-                setupChannelButtons(updatedChannels);
-
-                // Update the last updated time in the panel
-                menuBarView.updateLastUpdatedTime();
-
-                // Stop the automatic updates timer
-                if (automaticUpdateTimer != null && automaticUpdateTimer.isRunning()) {
-                    automaticUpdateTimer.stop();
-                }
-
-                // Start automatic updates again after manual update
-                startAutomaticUpdates();
-            });
-
-            // Action listener for the "Update Schedule" menu item
-            menuBarView.addUpdateScheduleListener(e -> {
-                // Get currently selected channel
-                Channel selectedChannel = this.selectedChannel;
-
-                // remove that selected channel's schedule from the cache.
-                cache.clearCacheForAChannel(selectedChannel);
-
-                if (selectedChannel != null) {
-                    // Fetch updated schedules for the selected channel from the server
-                    ScheduleParser scheduleParser = new ScheduleParser(selectedChannel, cache);
-                    List<Schedule> updatedSchedules = scheduleParser.fetchSchedules();
-                    // Update the schedules for the selected channel in the cache
-                    cache.addSchedules(selectedChannel, updatedSchedules);
-                    // Update the program view with the new schedules
-                    programView.populateProgramTable(updatedSchedules);
-                }
-                // Update the last updated time in the panel
-                menuBarView.updateLastUpdatedTime();
-
-                // Stop the automatic updates timer
-                if (automaticUpdateTimer != null && automaticUpdateTimer.isRunning()) {
-                    automaticUpdateTimer.stop();
-                }
-
-                // Start automatic updates again after manual update
-                startAutomaticUpdates();
-            });
-
-            // Start automatic updates initially
+            setupMenuListeners();
             startAutomaticUpdates();
         }
     }
@@ -89,35 +42,36 @@ public class Controller {
         }
     }
 
+
     private void updateProgramTable(Channel channel) {
         selectedChannel = channel;
-        ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
-        List<Schedule> schedules = scheduleParser.fetchSchedules();
-        programView.populateProgramTable(schedules);
-        // TODO: check if channel things get updated properly or not.
-        // Selected channel's name should be visible.
+
+        List<Schedule> schedules = cache.getSchedules(channel);
+
+        if (schedules == null) {
+            ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
+            schedules = scheduleParser.fetchSchedules();
+            if (schedules.isEmpty()) {
+               // programView.setProgramTextField(); // Update the text field
+                menuBarView.setSelectedChannelLabel(channel.getChannelName());
+                return;
+            }
+            cache.addSchedules(channel, schedules);
+        }
+
+        programView.populateProgramTable(schedules,this);
         menuBarView.setSelectedChannelLabel(channel.getChannelName());
     }
 
     private void startAutomaticUpdates() {
-        // Only start the timer if it's not already running
-        if (automaticUpdateTimer == null || !automaticUpdateTimer.isRunning()) {
-            automaticUpdateTimer = new Timer(60 * 60 * 1000, e -> {
-                // Check if cache is empty before clearing it
-                if (!cache.isEmpty()) {
-                    cache.clearCache();
-                }
-                // Fetch channels from the server
-                List<Channel> updatedChannels = fetchChannelsFromXML();
-
-                // Update the channel buttons
-                setupChannelButtons(updatedChannels);
-
-                // Update the last updated time in the panel
-                menuBarView.updateLastUpdatedTime();
-            });
-            automaticUpdateTimer.start();
-        }
+        automaticUpdateTimer = new Timer(60 * 60 * 1000, e -> {
+            // Update the channel buttons
+            List<Channel> updatedChannels = fetchChannelsFromXML();
+            setupChannelButtons(updatedChannels);
+            // Update the last updated time in the panel
+            menuBarView.updateLastUpdatedTime();
+        });
+        automaticUpdateTimer.start();
     }
 
     private List<Channel> fetchChannelsFromXML() {
@@ -131,4 +85,79 @@ public class Controller {
         }
         return channels;
     }
+
+    private void setupMenuListeners() {
+        // Action listener for the "Update Channel" menu item
+        menuBarView.addUpdateChannelListener(e -> handleUpdateChannel());
+
+        // Action listener for the "Update Schedule" menu item
+        menuBarView.addUpdateScheduleListener(e -> handleUpdateSchedule());
+    }
+
+    private void handleUpdateChannel() {
+        cache.clearCacheForAChannel(selectedChannel);
+        List<Channel> updatedChannels = fetchChannelsFromXML();
+        setupChannelButtons(updatedChannels);
+        menuBarView.updateLastUpdatedTime();
+        resetAutomaticUpdates();
+    }
+
+    private void handleUpdateSchedule() {
+        cache.clearCacheForAChannel(selectedChannel);
+        updateProgramTable(selectedChannel);
+        menuBarView.updateLastUpdatedTime();
+        resetAutomaticUpdates();
+    }
+
+    private void resetAutomaticUpdates() {
+        if (automaticUpdateTimer != null && automaticUpdateTimer.isRunning()) {
+            automaticUpdateTimer.stop();
+        }
+        startAutomaticUpdates();
+    }
+
+    public void addProgramTableActionListener(JButton button, Schedule schedule) {
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showProgramDetails(schedule);
+            }
+        });
+    }
+
+    public void showProgramDetails(Schedule schedule) {
+        String programDetails = "\n\n Program Name: " + schedule.getProgramName() +
+                "\nStart Time: " + schedule.getStartTime() +
+                "\nEnd Time: " + schedule.getEndTime() +
+                "\nDescription: " + schedule.getDescription();
+
+        try {
+            if (schedule.getImageUrl() != null && !schedule.getImageUrl().isEmpty()) {
+                URL imageUrl = new URL(schedule.getImageUrl());
+                BufferedImage image = ImageIO.read(imageUrl);
+
+                if (image != null) {
+                    ImageIcon imageIcon = new ImageIcon(image);
+
+                    JLabel label = new JLabel();
+                    label.setText("<html>" + programDetails.replaceAll("\n", "<br>") + "</html>");
+                    label.setIcon(imageIcon);
+
+                    JOptionPane.showMessageDialog(null, label);
+                } else {
+                    // Image is null, so just display the text
+                    JOptionPane.showMessageDialog(null, programDetails);
+                }
+            } else {
+                // Image URL is null or empty, so just display the text
+                JOptionPane.showMessageDialog(null, programDetails);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Exception occurred, so just display the text
+            JOptionPane.showMessageDialog(null, programDetails);
+        }
+    }
+
+
 }

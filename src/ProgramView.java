@@ -6,15 +6,28 @@ import java.util.List;
 public class ProgramView {
     private JTable programTable;
     private JScrollPane programScrollPane;
+    private List<Schedule> schedules;
 
     public ProgramView(JFrame frame) {
-        programTable = new JTable();
-        programScrollPane = new JScrollPane(programTable);
+        programTable = new JTable() {
+            @Override
+            public Class<?> getColumnClass(int column) {
+                return (column == 0) ? JButton.class : String.class;
+            }
 
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column == 0;
+            }
+        };
+        programScrollPane = new JScrollPane(programTable);
         frame.add(programScrollPane, BorderLayout.CENTER);
     }
 
-    public void populateProgramTable(List<Schedule> schedules) {
+    public void populateProgramTable(List<Schedule> schedules, Controller controller) {
+        this.schedules = schedules;
+        programTable.setRowHeight(25);
+
         String[] columnNames = {"Program Name", "Start Time", "End Time"};
         Object[][] data = new Object[schedules.size()][3];
 
@@ -26,6 +39,8 @@ public class ProgramView {
         }
 
         programTable.setModel(new DefaultTableModel(data, columnNames));
+        programTable.getColumnModel().getColumn(0).setCellRenderer(new ButtonRenderer());
+        programTable.getColumnModel().getColumn(0).setCellEditor(new ButtonEditor(new JCheckBox(), schedules, controller));
     }
 
     public JScrollPane getProgramScrollPane() {
