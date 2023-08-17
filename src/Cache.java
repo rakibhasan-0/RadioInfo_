@@ -2,10 +2,22 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Cache {
+    private static Cache instance;
     private final HashMap<Channel, List<Schedule>> cache = new HashMap<>();
     private Channel selectedChannel;
 
-    public Cache() {
+    private Cache() {
+    }
+
+    public static Cache getInstance() {
+        if (instance == null) {
+            synchronized (Cache.class) {
+                if (instance == null) {
+                    instance = new Cache();
+                }
+            }
+        }
+        return instance;
     }
 
     public void addSchedules(Channel channel, List<Schedule> schedules) {
@@ -32,14 +44,13 @@ public class Cache {
         return selectedChannel;
     }
 
-    public void clearCacheForAChannel(Channel channel){
-        if(channel != null){
+    public void clearCacheForAChannel(Channel channel) {
+        if (channel != null) {
             cache.remove(channel);
         }
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return cache.isEmpty();
     }
-
 }

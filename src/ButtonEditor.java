@@ -40,8 +40,4 @@ class ButtonEditor extends DefaultCellEditor implements ActionListener {
         fireEditingStopped();
         controller.showProgramDetails(schedules.get(row));
     }
-
-
-
-
 }

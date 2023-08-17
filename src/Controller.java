@@ -3,7 +3,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
@@ -19,12 +18,10 @@ public class Controller {
         this.channelView = channelView;
         this.programView = programView;
         this.menuBarView = menuBarView;
-        this.cache = new Cache();
-
-        // Fetch channels using the XMLParser
+        this.cache = Cache.getInstance();
         List<Channel> channels = fetchChannelsFromXML();
 
-        // Check if channels are available
+        // should I handle null pointer exceptions in that case?
         if (channels != null && !channels.isEmpty()) {
             setupChannelButtons(channels);
             setupMenuListeners();
@@ -51,8 +48,7 @@ public class Controller {
         if (schedules == null) {
             ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
             schedules = scheduleParser.fetchSchedules();
-            if (schedules.isEmpty()) {
-               // programView.setProgramTextField(); // Update the text field
+            if (schedules.isEmpty()){
                 menuBarView.setSelectedChannelLabel(channel.getChannelName());
                 return;
             }
@@ -65,10 +61,8 @@ public class Controller {
 
     private void startAutomaticUpdates() {
         automaticUpdateTimer = new Timer(60 * 60 * 1000, e -> {
-            // Update the channel buttons
             List<Channel> updatedChannels = fetchChannelsFromXML();
             setupChannelButtons(updatedChannels);
-            // Update the last updated time in the panel
             menuBarView.updateLastUpdatedTime();
         });
         automaticUpdateTimer.start();
@@ -87,10 +81,7 @@ public class Controller {
     }
 
     private void setupMenuListeners() {
-        // Action listener for the "Update Channel" menu item
         menuBarView.addUpdateChannelListener(e -> handleUpdateChannel());
-
-        // Action listener for the "Update Schedule" menu item
         menuBarView.addUpdateScheduleListener(e -> handleUpdateSchedule());
     }
 
@@ -130,7 +121,6 @@ public class Controller {
                 "\nStart Time: " + schedule.getStartTime() +
                 "\nEnd Time: " + schedule.getEndTime() +
                 "\nDescription: " + schedule.getDescription();
-
         try {
             if (schedule.getImageUrl() != null && !schedule.getImageUrl().isEmpty()) {
                 URL imageUrl = new URL(schedule.getImageUrl());
@@ -138,26 +128,21 @@ public class Controller {
 
                 if (image != null) {
                     ImageIcon imageIcon = new ImageIcon(image);
-
                     JLabel label = new JLabel();
                     label.setText("<html>" + programDetails.replaceAll("\n", "<br>") + "</html>");
                     label.setIcon(imageIcon);
 
                     JOptionPane.showMessageDialog(null, label);
                 } else {
-                    // Image is null, so just display the text
                     JOptionPane.showMessageDialog(null, programDetails);
                 }
             } else {
-                // Image URL is null or empty, so just display the text
                 JOptionPane.showMessageDialog(null, programDetails);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            // Exception occurred, so just display the text
             JOptionPane.showMessageDialog(null, programDetails);
         }
     }
-
 
 }
