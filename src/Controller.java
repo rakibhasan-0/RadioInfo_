@@ -14,11 +14,12 @@ public class Controller {
     private Channel selectedChannel;
     private Timer automaticUpdateTimer;
 
-    public Controller(ChannelView channelView, ProgramView programView, MenuBarView menuBarView) {
+    public Controller(ChannelView channelView, MenuBarView menuBarView, JFrame frame) {
         this.channelView = channelView;
-        this.programView = programView;
+        this.programView = new ProgramView(frame,this);
         this.menuBarView = menuBarView;
         this.cache = Cache.getInstance();
+        cache.registerObserver(programView);
         List<Channel> channels = fetchChannelsFromXML();
 
         // should I handle null pointer exceptions in that case?
@@ -55,7 +56,7 @@ public class Controller {
             cache.addSchedules(channel, schedules);
         }
 
-        programView.populateProgramTable(schedules,this);
+        programView.populateProgramTable(schedules);
         menuBarView.setSelectedChannelLabel(channel.getChannelName());
     }
 
@@ -145,4 +146,7 @@ public class Controller {
         }
     }
 
+    ProgramView getProgramView(){
+        return this.programView;
+    }
 }

@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class RadioInfo {
     public RadioInfo() {
@@ -9,13 +8,13 @@ public class RadioInfo {
         MenuBarView menuBar = new MenuBarView(frame);
 
         ChannelView channelView = new ChannelView(frame);
-        ProgramView programView = new ProgramView(frame);
+        //ProgramView programView = new ProgramView(frame);
 
-        Controller controller = new Controller(channelView, programView, menuBar);
+        Controller controller = new Controller(channelView, menuBar,frame);
 
         JPanel menuPanel = new JPanel();
         menuPanel.add(channelView.getScrollChannel());
-        menuPanel.add(programView.getProgramScrollPane());
+        menuPanel.add(controller.getProgramView().getProgramScrollPane());
         menuPanel.setLayout(new GridLayout(1, 2));
 
         frame.setJMenuBar(menuBar.getMenuBar());
