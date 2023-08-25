@@ -8,7 +8,6 @@ public class RadioInfo {
         MenuBarView menuBar = new MenuBarView(frame);
 
         ChannelView channelView = new ChannelView(frame);
-        //ProgramView programView = new ProgramView(frame);
 
         Controller controller = new Controller(channelView, menuBar,frame);
 

@@ -15,11 +15,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XMLParser extends SwingWorker<List<Channel>, Void> {
+public class XMLParser extends SwingWorker<List<Channel>, Void> implements Subject {
     private final ArrayList<Channel> channels;
+    private final List<Observer> observers;
 
     public XMLParser() {
         channels = new ArrayList<>();
+        observers = new ArrayList<>();
     }
 
     @Override
@@ -32,6 +34,7 @@ public class XMLParser extends SwingWorker<List<Channel>, Void> {
     protected void done() {
         try {
             List<Channel> fetchedChannels = get();
+            notifyObservers();
             // Notify any observers if needed
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,5 +142,22 @@ public class XMLParser extends SwingWorker<List<Channel>, Void> {
 
     public ArrayList<Channel> getChannels() {
         return channels;
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Observer observer) {
+        observers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
     }
 }

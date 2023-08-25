@@ -24,13 +24,12 @@ public class MenuBarView {
         JMenuItem updateChannel = new JMenuItem("Update");
         JMenuItem updateSchedule = new JMenuItem("Update");
 
-
         channel.add(updateChannel);
         schedule.add(updateSchedule);
         menuBar.add(channel);
         menuBar.add(schedule);
 
-        timePanel = new JPanel(new GridLayout(1, 2));
+        timePanel = new JPanel(new GridLayout(1, 3));
         currentTimeLabel = new JLabel();
         lastUpdatedLabel = new JLabel();
 
@@ -104,4 +103,9 @@ public class MenuBarView {
     public void setSelectedChannelLabel(String channelName) {
         selectedChannelLabel.setText("Selected Channel: " + channelName);
     }
+
+    public JPanel getTimePanel() {
+        return timePanel;
+    }
+
 }

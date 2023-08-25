@@ -3,7 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ProgramView implements Observer {
+public class ProgramView{
     private JTable programTable;
     private JScrollPane programScrollPane;
     private List<Schedule> schedules;
@@ -27,20 +27,8 @@ public class ProgramView implements Observer {
 
         programScrollPane = new JScrollPane(programTable);
         frame.add(programScrollPane, BorderLayout.CENTER);
-
-        // Register this view as an observer of the cache
-        Cache.getInstance().registerObserver(this);
     }
 
-    @Override
-    public void update() {
-        // Get the latest data from the cache
-        Channel selectedChannel = Cache.getInstance().getSelectedChannel();
-        if (selectedChannel != null) {
-            List<Schedule> schedules = Cache.getInstance().getSchedules(selectedChannel);
-            populateProgramTable(schedules);
-        }
-    }
 
     public void populateProgramTable(List<Schedule> schedules) {
         this.schedules = schedules;

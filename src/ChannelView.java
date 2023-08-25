@@ -6,12 +6,22 @@ public class ChannelView{
     private JPanel channelPanel;
     private JFrame frame;
     private JScrollPane scrollChannel;
+    private JProgressBar spinner = new JProgressBar();
+
 
     public ChannelView(JFrame frame) {
         this.frame = frame;
         channelPanel = new JPanel(new GridBagLayout());
         scrollChannel = new JScrollPane(channelPanel);
         GridBagConstraints constraints = new GridBagConstraints();
+        spinner = new JProgressBar();  // Initialize the spinner
+        spinner.setIndeterminate(true);
+        spinner.setStringPainted(true);
+        spinner.setString("Loading channels...");
+
+        frame.add(spinner, BorderLayout.NORTH);
+
+
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1.0;
 
@@ -45,8 +55,19 @@ public class ChannelView{
         channelPanel.repaint();
     }
 
+    public void hideSpinner() {
+        spinner.setVisible(false);
+        channelPanel.revalidate();
+        channelPanel.repaint();
+    }
+
     public JScrollPane getScrollChannel() {
         return scrollChannel;
     }
+
+    public JComponent getSpinner() {
+        return spinner; // assuming spinner is a member variable in ChannelView
+    }
+
 
 }
