@@ -1,3 +1,7 @@
+import Controll.Controller;
+import View.ChannelView;
+import View.MenuBarView;
+
 import javax.swing.*;
 import java.awt.*;
 

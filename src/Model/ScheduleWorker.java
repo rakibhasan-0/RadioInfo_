@@ -1,3 +1,10 @@
+package Model;
+
+import Model.Cache;
+import Model.Channel;
+import Model.Schedule;
+import Model.ScheduleParser;
+
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;

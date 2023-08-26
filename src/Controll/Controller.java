@@ -1,3 +1,11 @@
+package Controll;
+
+import Controll.Observer;
+import Model.*;
+import View.ChannelView;
+import View.MenuBarView;
+import View.ProgramView;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

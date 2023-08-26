@@ -1,3 +1,8 @@
+package View;
+
+import Controll.Controller;
+import Model.Schedule;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

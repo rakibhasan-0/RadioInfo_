@@ -1,3 +1,8 @@
+package Model;
+
+import Model.Cache;
+import Model.Channel;
+import Model.Schedule;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -29,7 +34,7 @@ public class ScheduleParser {
         URL scheduleURL = channel.getScheduleURL();
 
         if (scheduleURL == null) {
-            System.out.println("Channel '" + channel.getChannelName() + "' has no schedule information.");
+            System.out.println("Model.Channel '" + channel.getChannelName() + "' has no schedule information.");
             return schedules;
         }
 
@@ -68,7 +73,7 @@ public class ScheduleParser {
                 inputStream.close();
             }
 
-            cache.addSchedules(channel, schedules); // Cache the schedules
+            cache.addSchedules(channel, schedules); // Model.Cache the schedules
         } catch (IOException | ParserConfigurationException | SAXException e) {
             e.printStackTrace();
         }
@@ -113,10 +118,10 @@ public class ScheduleParser {
         }
 
         if ((startTime.isAfter(sixHourBefore) && !nowDate.isAfter(parseDate)) || startTime.isBefore(twelveHoursAfter)) {
-            System.out.println("Filtered Schedule (Within Range): " + startTime);
+            System.out.println("Filtered Model.Schedule (Within Range): " + startTime);
             return new Schedule(title, description, imageUrl, startTime, endTime);
         } else {
-            System.out.println("Schedule Outside Range: " + startTime);
+            System.out.println("Model.Schedule Outside Range: " + startTime);
             return null;
         }
     }

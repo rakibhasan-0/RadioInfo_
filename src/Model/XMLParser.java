@@ -1,4 +1,10 @@
+package Model;
+
 import javax.swing.*;
+
+import Controll.Observer;
+import Controll.Subject;
+import Model.Channel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

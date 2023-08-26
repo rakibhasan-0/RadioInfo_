@@ -1,8 +1,10 @@
+package View;
+
 import javax.swing.*;
 import java.awt.*;
 
 
-public class ChannelView{
+public class ChannelView {
     private JPanel channelPanel;
     private JFrame frame;
     private JScrollPane scrollChannel;
@@ -49,7 +51,7 @@ public class ChannelView{
         return channelPanel;
     }
 
-    public void clearChannelButtons(){
+    public void clearChannelButtons() {
         channelPanel.removeAll();
         channelPanel.revalidate();
         channelPanel.repaint();

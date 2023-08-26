@@ -1,3 +1,4 @@
+package View;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,8 +19,8 @@ public class MenuBarView {
         this.frame = frame;
         menuBar = new JMenuBar();
 
-        JMenu channel = new JMenu("Channel");
-        JMenu schedule = new JMenu("Schedule");
+        JMenu channel = new JMenu("Model.Channel");
+        JMenu schedule = new JMenu("Model.Schedule");
 
         JMenuItem updateChannel = new JMenuItem("Update");
         JMenuItem updateSchedule = new JMenuItem("Update");
@@ -45,7 +46,6 @@ public class MenuBarView {
         selectedChannelLabel = new JLabel("Selected Channel: ");
         timePanel.add(selectedChannelLabel);
 
-        // Start updating the current time label every second
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -54,13 +54,8 @@ public class MenuBarView {
         });
         timer.start();
 
-        // Set initial values for current time and last updated time
         updateCurrentTimeLabel();
         updateLastUpdatedTime();
-    }
-
-    public JFrame getFrame() {
-        return this.frame;
     }
 
     public JMenuBar getMenuBar() {
@@ -101,7 +96,7 @@ public class MenuBarView {
     }
 
     public void setSelectedChannelLabel(String channelName) {
-        selectedChannelLabel.setText("Selected Channel: " + channelName);
+        selectedChannelLabel.setText("Selected Model.Channel: " + channelName);
     }
 
     public JPanel getTimePanel() {
