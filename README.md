@@ -5,15 +5,16 @@ Radio Info Scheduler
 
 Description:
 This application provides a comprehensive management and utility system for radio schedules. It facilitates the retrieval, display, and management of radio programs and their respective timings.
+
 Core Features:
 
-    Schedule Management (Table class):
+Schedule Management (Table class):
     This class represents a collection of radio schedules. It provides functionalities like:
         Storing a list of schedules.
         Indicating the loading status of the schedules.
         Capturing reasons for loading failures, if any.
-
-    Time Utility (Time class):
+        
+Time Utility (Time class):
     A utility class offering various time-related functionalities to support the main application. This includes:
         Converting a UTC string to a LocalDateTime object.
         Determining whether the current time falls within a specified range.
