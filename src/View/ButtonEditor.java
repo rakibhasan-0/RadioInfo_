@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class ButtonEditor extends DefaultCellEditor implements ActionListener {
+public class ButtonEditor extends DefaultCellEditor implements ActionListener {
     private JButton button;
     private List<Schedule> schedules;
     private Controller controller;

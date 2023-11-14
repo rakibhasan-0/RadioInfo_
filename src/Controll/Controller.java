@@ -1,28 +1,24 @@
 package Controll;
-
-import Controll.Observer;
 import Model.*;
-import View.ChannelView;
-import View.MenuBarView;
-import View.ProgramView;
+import View.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Controller implements Observer {
-
     private final ChannelView channelView;
     private final ProgramView programView;
     private final MenuBarView menuBarView;
     private final Cache cache;
     private Channel selectedChannel;
     private Timer automaticUpdateTimer;
-    private final XMLParser parser;
 
     public Controller(ChannelView channelView, MenuBarView menuBarView, JFrame frame) {
         this.channelView = channelView;
@@ -30,12 +26,13 @@ public class Controller implements Observer {
 
         initializeNorthPanel(frame);
 
-        this.programView = new ProgramView(frame, this);
+        this.programView = new ProgramView( this);
         this.cache = Cache.getInstance();
-        this.parser = new XMLParser();
-        parser.registerObserver(this);
+        XMLParserWorker xmlWorker = new XMLParserWorker();
+        xmlWorker.execute();
+        xmlWorker.registerObserver(this);
         setupMenuListeners();
-        fetchChannelsFromXML();
+
     }
 
     private void initializeNorthPanel(JFrame frame) {
@@ -45,13 +42,6 @@ public class Controller implements Observer {
         frame.add(combinedNorthPanel, BorderLayout.NORTH);
     }
 
-    private void fetchChannelsFromXML() {
-        try {
-            parser.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     private void handleUpdateSchedule() {
         if (selectedChannel != null) {
@@ -59,24 +49,35 @@ public class Controller implements Observer {
             menuBarView.updateLastUpdatedTime();
             resetAutomaticUpdates();
         } else {
-            // Show a dialog informing the user to select a channel first.
             JOptionPane.showMessageDialog(null, "Please select a channel first before updating the schedule.");
         }
     }
 
 
     private void fetchScheduleForChannel(Channel channel) {
-        // Fetch the updated schedules for the given channel
         ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
         List<Schedule> schedules = scheduleParser.fetchSchedules();
-
-        // Update the cache with the new schedules
         cache.addSchedules(channel, schedules);
-
-        // Update the program view with the new schedules
-        programView.populateProgramTable(schedules);
+        populateProgramTable(schedules);
     }
 
+    public void populateProgramTable(List<Schedule> schedules) {
+        schedules = schedules;
+        String[] columnNames = {"Program Name", "Start Time", "End Time"};
+        Object[][] data = new Object[schedules.size()][3];
+
+        for (int i = 0; i < schedules.size(); i++) {
+            Schedule schedule = schedules.get(i);
+            data[i][0] = schedule.getProgramName();
+            data[i][1] = schedule.getStartTime();
+            data[i][2] = schedule.getEndTime();
+        }
+
+        programView.getProgramTable().setModel(new DefaultTableModel(data, columnNames));
+        programView.getProgramTable().getColumnModel().getColumn(0).setCellRenderer(new ButtonRenderer());
+        programView.getProgramTable().getColumnModel().getColumn(0).setCellEditor(new ButtonEditor(new JCheckBox(), schedules, this));
+
+    }
 
     private void setupChannelButtons(List<Channel> channels) {
         if (channels == null) return;
@@ -90,36 +91,23 @@ public class Controller implements Observer {
         }
     }
 
-    @Override
-    public void update() {
-        try {
-            List<Channel> channels = parser.get();
-            if (channels != null && !channels.isEmpty()) {
-                setupChannelButtons(channels);
-                menuBarView.updateLastUpdatedTime();
-                resetAutomaticUpdates();
-                channelView.hideSpinner();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
 
     private void handleUpdate() {
         cache.clearCacheForAChannel(selectedChannel);
-        fetchChannelsFromXML();
+        // data will be fetched from the XML server.
         menuBarView.updateLastUpdatedTime();
         resetAutomaticUpdates();
     }
 
     private void setupMenuListeners() {
         menuBarView.addUpdateChannelListener(e -> {
-            System.out.println("Update Channel Button Clicked!");
+            //System.out.println("Update Channel Button Clicked!");
             handleUpdate();
         });
 
         menuBarView.addUpdateScheduleListener(e -> {
-            System.out.println("Update Schedule Button Clicked!");
+            //System.out.println("Update Schedule Button Clicked!");
             handleUpdateSchedule();
         });
     }
@@ -133,7 +121,7 @@ public class Controller implements Observer {
 
     private void startAutomaticUpdates() {
         automaticUpdateTimer = new Timer(60 * 60 * 1000, e -> {
-            fetchChannelsFromXML();
+            // new data will be fetched from the XML server.
             menuBarView.updateLastUpdatedTime();
         });
         automaticUpdateTimer.start();
@@ -142,6 +130,7 @@ public class Controller implements Observer {
     public void addProgramTableActionListener(JButton button, Schedule schedule) {
         button.addActionListener(e -> showProgramDetails(schedule));
     }
+
     public void showProgramDetails(Schedule schedule) {
         if (schedule == null) {
             // Handle null schedule
@@ -216,7 +205,21 @@ public class Controller implements Observer {
             cache.addSchedules(channel, schedules);
         }
 
-        programView.populateProgramTable(schedules);
+        populateProgramTable(schedules);
         menuBarView.setSelectedChannelLabel(channel.getChannelName());
+    }
+
+    public void update(ArrayList<Channel> channels) {
+        SwingUtilities.invokeLater(() -> {
+            setupChannelButtons(channels);
+            menuBarView.updateLastUpdatedTime();
+            resetAutomaticUpdates();
+            channelView.hideSpinner();
+        });
+    }
+
+    @Override
+    public void channelUpdate(ArrayList<Channel> channels) {
+
     }
 }

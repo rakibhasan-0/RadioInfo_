@@ -15,12 +15,12 @@ public class MenuBarView {
     private JLabel selectedChannelLabel;
     private LocalDateTime lastUpdateTime;
 
-    public MenuBarView(JFrame frame) {
-        this.frame = frame;
+    public MenuBarView() {
+
         menuBar = new JMenuBar();
 
-        JMenu channel = new JMenu("Model.Channel");
-        JMenu schedule = new JMenu("Model.Schedule");
+        JMenu channel = new JMenu("Channel");
+        JMenu schedule = new JMenu("Schedule");
 
         JMenuItem updateChannel = new JMenuItem("Update");
         JMenuItem updateSchedule = new JMenuItem("Update");
@@ -36,12 +36,6 @@ public class MenuBarView {
 
         timePanel.add(currentTimeLabel);
         timePanel.add(lastUpdatedLabel);
-
-        frame.add(timePanel, BorderLayout.NORTH);
-        frame.setJMenuBar(menuBar);
-        frame.setSize(500, 500);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         selectedChannelLabel = new JLabel("Selected Channel: ");
         timePanel.add(selectedChannelLabel);
@@ -96,7 +90,7 @@ public class MenuBarView {
     }
 
     public void setSelectedChannelLabel(String channelName) {
-        selectedChannelLabel.setText("Selected Model.Channel: " + channelName);
+        selectedChannelLabel.setText("Selected Channel: " + channelName);
     }
 
     public JPanel getTimePanel() {

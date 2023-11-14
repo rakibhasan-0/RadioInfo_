@@ -9,7 +9,6 @@ public class Schedule {
     private final String imageUrl;
     private final LocalTime startTime;
     private final LocalTime endTime;
-    private JButton showMoreButton;
 
     public Schedule(String programName, String description, String imageUrl, LocalTime startTime, LocalTime endTime) {
         this.programName = programName;

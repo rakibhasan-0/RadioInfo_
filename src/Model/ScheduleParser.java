@@ -1,8 +1,5 @@
 package Model;
 
-import Model.Cache;
-import Model.Channel;
-import Model.Schedule;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

@@ -1,8 +1,5 @@
 package Model;
-
 import Controll.Observer;
-
-import javax.security.auth.Subject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +24,6 @@ public class Cache {
         return instance;
     }
 
-    // Controll.Observer pattern methods
 
     public void addSchedules(Channel channel, List<Schedule> schedules) {
         cache.put(channel, schedules);
@@ -43,10 +39,6 @@ public class Cache {
 
     public void clearCache() {
         cache.clear();
-    }
-
-    public Channel getSelectedChannel() {
-        return selectedChannel;
     }
 
     public void clearCacheForAChannel(Channel channel) {

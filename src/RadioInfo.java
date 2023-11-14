@@ -8,10 +8,8 @@ import java.awt.*;
 public class RadioInfo {
     public RadioInfo() {
         JFrame frame = new JFrame("Radio Info");
-
-        MenuBarView menuBar = new MenuBarView(frame);
-
-        ChannelView channelView = new ChannelView(frame);
+        MenuBarView menuBar = new MenuBarView();
+        ChannelView channelView = new ChannelView();
 
         Controller controller = new Controller(channelView, menuBar,frame);
 
@@ -23,6 +21,7 @@ public class RadioInfo {
         frame.setJMenuBar(menuBar.getMenuBar());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 500);
+        frame.add(channelView.getScrollChannel(),BorderLayout.WEST);
         frame.add(menuPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
