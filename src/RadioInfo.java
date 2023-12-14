@@ -1,11 +1,9 @@
 import Controll.Controller;
-import View.ChannelView;
 import View.MenuBarView;
 import View.ProgramView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.time.LocalDateTime;
 
 public class RadioInfo {
     public RadioInfo() {
