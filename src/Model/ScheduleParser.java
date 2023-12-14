@@ -1,5 +1,4 @@
 package Model;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -8,123 +7,86 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ScheduleParser {
+    private final ArrayList<Schedule> schedules = new ArrayList<Schedule>();
     private final Channel channel;
-    private final Cache cache;
-    private LocalTime now, sixHourBefore, twelveHoursAfter;
 
-    public ScheduleParser(Channel channel, Cache cache) {
+    public ScheduleParser(Channel channel){
+
         this.channel = channel;
-        this.cache = cache;
-    }
-
-    public List<Schedule> fetchSchedules() {
-        List<Schedule> schedules = new ArrayList<>();
-        URL scheduleURL = channel.getScheduleURL();
-
-        if (scheduleURL == null) {
-            System.out.println("Model.Channel '" + channel.getChannelName() + "' has no schedule information.");
-            return schedules;
-        }
-
-        now = LocalTime.now();
-        sixHourBefore = now.minusHours(6);
-        twelveHoursAfter = now.plusHours(12);
-
-        LocalTime cutOffTime = LocalTime.of(twelveHoursAfter.getHour(), 0);
-
-        int currentPage = 1;
-        int totalPages = Integer.MAX_VALUE;
-
-        try {
-            while (currentPage <= totalPages) {
-                URL pageURL = new URL(scheduleURL + "&page=" + currentPage);
-                InputStream inputStream = pageURL.openStream();
-                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                Document document = builder.parse(inputStream);
-                Element root = document.getDocumentElement();
-
-                if (currentPage == 1) {
-                    totalPages = getTotalPages(root);
+        String scheduleURL = channel.getScheduleURL();
+        // since space stated that we have to fetch sechedule from 12 before and 12 hours after of the current time
+        // which means that may need to fetch data from the previous or next day I guess.
+        if(scheduleURL != null){
+            try{
+                LocalTime now = LocalTime.now();
+                LocalTime sixHourBefore = now.minusHours(12);
+                LocalTime twelveHoursAfter = now.plusHours(12);
+                LocalTime cutOffTime = LocalTime.of(twelveHoursAfter.getHour(), 0);
+                scheduleURL = channel.getScheduleURL();
+                URL url = new URL(scheduleURL);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                if(connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                    DocumentBuilder builder = factory.newDocumentBuilder();
+                    Document doc = builder.parse(connection.getInputStream());
+                    doc.normalize();
+                    processSchedule(doc);
                 }
-
-                NodeList scheduleNodes = root.getElementsByTagName("scheduledepisode");
-                for (int i = 0; i < scheduleNodes.getLength(); i++) {
-                    Element scheduleElement = (Element) scheduleNodes.item(i);
-                    Schedule schedule = parseScheduleElement(scheduleElement, cutOffTime);
-                    if (schedule != null) {
-                        schedules.add(schedule);
-                    }
-                }
-
-                currentPage++;
-                inputStream.close();
+            } catch (ProtocolException | MalformedURLException | ParserConfigurationException | SAXException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
 
-            cache.addSchedules(channel, schedules); // Model.Cache the schedules
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            e.printStackTrace();
+        }else{
+            System.out.println("There is nothing to fetch");
         }
+    }
+
+    private void  processSchedule(Document document){
+        NodeList nodeList = document.getElementsByTagName("scheduledepisode");
+        for(int i = 0; i < nodeList.getLength(); i++){
+            Element element = (Element) nodeList.item(i);
+            String programName = getElementTextContent(element,"title");
+            String description = getElementTextContent(element,"description");
+            String imageURL = getElementTextContent(element,"imageurl");
+            String starttimeutc = getElementTextContent(element,"starttimeutc");
+            String endtimeutc = getElementTextContent(element,"endtimeutc");
+            LocalTime startTime = LocalTime.parse(starttimeutc.substring(11, 19), DateTimeFormatter.ofPattern("HH:mm:ss"));
+            LocalTime endTime = LocalTime.parse(endtimeutc.substring(11, 19), DateTimeFormatter.ofPattern("HH:mm:ss"));
+            Schedule schedule = new ScheduleBuilder()
+                    .setEndTime(endTime)
+                    .setStartTime(startTime)
+                    .setProgramName(programName)
+                    .setImage(imageURL)
+                    .setDescription(description)
+                    .build();
+
+            schedules.add(schedule);
+        }
+    }
+
+    private String getElementTextContent(Element parentElement, String childElementName) {
+        NodeList list = parentElement.getElementsByTagName(childElementName);
+        if (list.getLength() > 0) {
+            return list.item(0).getTextContent();
+        }
+        return null;
+    }
+
+    public ArrayList<Schedule> getScheduleList() {
+        //System.out.println("Size of the Schedule    " + schedules.size());
         return schedules;
     }
 
-    private int getTotalPages(Element root) {
-        String totalPagesStr = getTextContent(root, "totalpages");
-        if (totalPagesStr != null) {
-            return Integer.parseInt(totalPagesStr);
-        }
-        return Integer.MAX_VALUE;
-    }
-
-    private Schedule parseScheduleElement(Element scheduleElement, LocalTime cutOffTime) {
-        String title = getTextContent(scheduleElement, "title");
-        String description = getTextContent(scheduleElement, "description");
-        String imageUrl = getTextContent(scheduleElement, "imageurl");
-
-        String dateStr = getTextContent(scheduleElement, "starttimeutc").substring(0, 10);
-        String startTimestr = getTextContent(scheduleElement, "starttimeutc").substring(11, 19);
-        String endTimestr = getTextContent(scheduleElement, "endtimeutc").substring(11, 19);
-
-        LocalTime startTime;
-        LocalTime endTime;
-        LocalDate parseDate;
-        LocalDate nowDate = LocalDate.now();
-
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            parseDate = LocalDate.parse(dateStr, dateTimeFormatter);
-            startTime = LocalTime.parse(startTimestr, formatter);
-            endTime = LocalTime.parse(endTimestr, formatter);
-        } catch (Exception e) {
-            System.err.println("Error parsing time: " + e.getMessage());
-            return null;
-        }
-
-        if (title == null) {
-            title = "Program title missing";
-        }
-
-        if ((startTime.isAfter(sixHourBefore) && !nowDate.isAfter(parseDate)) || startTime.isBefore(twelveHoursAfter)) {
-            System.out.println("Filtered Model.Schedule (Within Range): " + startTime);
-            return new Schedule(title, description, imageUrl, startTime, endTime);
-        } else {
-            System.out.println("Model.Schedule Outside Range: " + startTime);
-            return null;
-        }
-    }
-
-    private String getTextContent(Element element, String tagName) {
-        Element childElement = (Element) element.getElementsByTagName(tagName).item(0);
-        return childElement != null ? childElement.getTextContent() : null;
-    }
 }

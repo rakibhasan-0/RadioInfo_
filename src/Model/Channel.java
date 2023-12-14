@@ -1,35 +1,67 @@
 package Model;
-
-import java.awt.*;
-import java.net.URL;
+import javax.swing.*;
 
 public class Channel {
-    private final String channelName;
-    private final URL scheduleURL;
-    private final Image channelImage;
-    private final int id;
+    private String channelName;
+    private String scheduleURL;
+    private int id;
+    private String channelType;
+    private ImageIcon icon;
+    private String tagline;
 
-    public Channel(String channelName, URL scheduleURL, Image channelImage, int id) {
-        this.channelName = channelName;
-        this.scheduleURL = scheduleURL;
-        this.channelImage = channelImage;
-        this.id = id;
-    }
 
     public String getChannelName() {
         return channelName;
     }
 
-    public URL getScheduleURL() {
+    public String getScheduleURL() {
         return scheduleURL;
     }
 
-    public Image getChannelImage() {
-        return channelImage;
-    }
 
     public int getId() {
         return id;
     }
 
+    public String getChannelType() {
+        return channelType;
+    }
+
+    public ImageIcon getIcon() {
+        return icon;
+    }
+
+    public String getTagline() {
+        return tagline;
+    }
+
+    public void setTagline(String tagline) {
+        this.tagline = tagline;
+    }
+
+
+
+    public void setScheduleURL(String scheduleURL) {
+        this.scheduleURL = scheduleURL;
+    }
+
+
+    public void setChannelImage(ImageIcon image) {
+        this.icon = image;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public void setChannelType(String channelType) {
+        this.channelType = channelType;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    Channel() {
+    }
 }

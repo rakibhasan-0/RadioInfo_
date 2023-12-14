@@ -1,100 +1,88 @@
 package View;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MenuBarView {
-    private JFrame frame;
-    private JMenuBar menuBar;
-    private JLabel currentTimeLabel;
-    private JLabel lastUpdatedLabel;
-    private JPanel timePanel;
-    private JLabel selectedChannelLabel;
+    private final JMenuBar menuBar;
+    private final JLabel currentTimeLabel;
+    private final JLabel channelUpdatedLabel;
+    private final JPanel timePanel;
+    private final JLabel selectedChannelLabel;
+    private final JMenu channelTypes;
     private LocalDateTime lastUpdateTime;
+    private final JLabel programUpdatedLabel;
 
     public MenuBarView() {
-
         menuBar = new JMenuBar();
-
         JMenu channel = new JMenu("Channel");
         JMenu schedule = new JMenu("Schedule");
-
+        channelTypes = new JMenu("Channel Types");
         JMenuItem updateChannel = new JMenuItem("Update");
         JMenuItem updateSchedule = new JMenuItem("Update");
-
         channel.add(updateChannel);
         schedule.add(updateSchedule);
         menuBar.add(channel);
         menuBar.add(schedule);
-
-        timePanel = new JPanel(new GridLayout(1, 3));
+        menuBar.add(channelTypes);
+        timePanel = new JPanel(new GridLayout(2, 4));
         currentTimeLabel = new JLabel();
-        lastUpdatedLabel = new JLabel();
-
+        programUpdatedLabel = new JLabel("Program updated: ");
+        channelUpdatedLabel = new JLabel("Updating . . . .");
         timePanel.add(currentTimeLabel);
-        timePanel.add(lastUpdatedLabel);
-
+        timePanel.add(programUpdatedLabel);
+        timePanel.add(channelUpdatedLabel);
         selectedChannelLabel = new JLabel("Selected Channel: ");
         timePanel.add(selectedChannelLabel);
-
-        Timer timer = new Timer(1000, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateCurrentTimeLabel();
-            }
-        });
-        timer.start();
-
-        updateCurrentTimeLabel();
-        updateLastUpdatedTime();
     }
 
     public JMenuBar getMenuBar() {
         return this.menuBar;
     }
 
-    public void setCurrentTimeLabel(LocalDateTime currentTime) {
-        String formattedTime = "Current Time: " + currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        currentTimeLabel.setText(formattedTime);
+    public JLabel getChannelUpdatedLabel(){
+        return channelUpdatedLabel;
     }
 
-    public void setLastUpdatedLabel(LocalDateTime lastUpdatedTime) {
-        String formattedTime = "Last Updated: " + lastUpdatedTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        lastUpdatedLabel.setText(formattedTime);
-    }
 
     public void addUpdateChannelListener(ActionListener listener) {
-        JMenuItem updateChannel = menuBar.getMenu(0).getItem(0);
-        updateChannel.addActionListener(listener);
+        JMenuItem updateChannelListener = menuBar.getMenu(0).getItem(0);
+        updateChannelListener.addActionListener(listener);
     }
 
     public void addUpdateScheduleListener(ActionListener listener) {
-        JMenuItem updateSchedule = menuBar.getMenu(1).getItem(0);
-        updateSchedule.addActionListener(listener);
-    }
-
-    public void updateLastUpdatedTime() {
-        lastUpdateTime = LocalDateTime.now();
-        setLastUpdatedLabel(lastUpdateTime);
-    }
-
-    public void updateCurrentTimeLabel() {
-        setCurrentTimeLabel(LocalDateTime.now());
-    }
-
-    public LocalDateTime getLastUpdateTime() {
-        return lastUpdateTime;
+        JMenuItem scheduleListener = menuBar.getMenu(1).getItem(0);
+        scheduleListener.addActionListener(listener);
     }
 
     public void setSelectedChannelLabel(String channelName) {
         selectedChannelLabel.setText("Selected Channel: " + channelName);
     }
 
+    public JLabel getProgramUpdatedLabel(){
+        return programUpdatedLabel;
+    }
+
     public JPanel getTimePanel() {
         return timePanel;
     }
 
+    public void startClock() {
+        Timer clockTimer = new Timer(1000, e -> {
+            LocalDateTime currentTime = LocalDateTime.now();
+            SwingUtilities.invokeLater(() -> setCurrentTimeLabel(currentTime));
+        });
+        clockTimer.start();
+    }
+
+    public void setCurrentTimeLabel(LocalDateTime currentTime) {
+        String formattedTime = "Current Time: " + currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        SwingUtilities.invokeLater(() -> currentTimeLabel.setText(formattedTime));
+    }
+
+    public JMenu getChannelsTypeMenu() {
+        return channelTypes;
+    }
 }

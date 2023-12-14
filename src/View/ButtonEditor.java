@@ -1,48 +1,44 @@
 package View;
 
-import Controll.Controller;
+import Controll.ShowMoreButtonListener;
 import Model.Schedule;
-
 import javax.swing.*;
+import javax.swing.table.TableCellEditor;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
-import java.net.MalformedURLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
-public class ButtonEditor extends DefaultCellEditor implements ActionListener {
+public class ButtonEditor extends AbstractCellEditor implements TableCellEditor{
     private JButton button;
-    private List<Schedule> schedules;
-    private Controller controller;
+    private ShowMoreButtonListener listener;
+    private ArrayList<Schedule> schedules;
+    private String label;
     private int row;
 
-    public ButtonEditor(JCheckBox checkBox, List<Schedule> schedules, Controller controller) {
-        super(checkBox);
+    public ButtonEditor(ArrayList<Schedule> schedules, ShowMoreButtonListener buttonClickListener) {
         this.schedules = schedules;
-        this.controller = controller;
-        button = new JButton("Details");
-        button.addActionListener(this);
-    }
-
-    @Override
-    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-        this.row = row;
-        return button;
+        this.listener = buttonClickListener;
+        this.button = new JButton();
+        this.button.setOpaque(true);
+        this.button.addActionListener(e -> {
+            fireEditingStopped();
+            if (row >= 0 && row < schedules.size()) {
+                listener.onButtonClick(schedules.get(row));
+            }
+        });
     }
 
     @Override
     public Object getCellEditorValue() {
-        return schedules.get(row).getProgramName();  // Return the correct string instead of a boolean value.
+        return label;
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        fireEditingStopped();
-        controller.showProgramDetails(schedules.get(row));
+    public Component getTableCellEditorComponent(JTable table, Object value,
+                                                 boolean isSelected, int row, int column) {
+        label = (value == null) ? "" : value.toString();
+        button.setText(label);
+        this.row = row;
+        return button;
     }
+
 }

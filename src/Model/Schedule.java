@@ -1,30 +1,15 @@
 package Model;
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.LocalTime;
 
 public class Schedule {
-    private final String programName;
-    private final String description;
-    private final String imageUrl;
-    private final LocalTime startTime;
-    private final LocalTime endTime;
-
-    public Schedule(String programName, String description, String imageUrl, LocalTime startTime, LocalTime endTime) {
-        this.programName = programName;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
-    public LocalTime getStartTime() {
-        return startTime;
-    }
-
-    public LocalTime getEndTime() {
-        return endTime;
-    }
+    private  String programName = null;
+    private String description = null;
+    private LocalTime startTime = null;
+    private LocalTime endTime = null;
+    private Image image = null;
 
     public String getProgramName() {
         return programName;
@@ -34,7 +19,40 @@ public class Schedule {
         return description;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setProgramName(String programName) {
+        this.programName = programName;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    Schedule(){
+
     }
 }

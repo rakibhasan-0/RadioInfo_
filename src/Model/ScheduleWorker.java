@@ -1,40 +1,57 @@
 package Model;
+import Controll.Observer;
+import Controll.Subject;
 
-import Model.Cache;
-import Model.Channel;
-import Model.Schedule;
-import Model.ScheduleParser;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ScheduleWorker extends SwingWorker<HashMap<Channel, List<Schedule>>, Void> {
-    private final List<Channel> channels;
-    private final Cache cache;
+public class ScheduleWorker extends SwingWorker<ArrayList<Schedule>,Void> implements Subject {
+    private ArrayList<Schedule> schedules;
+    private ArrayList<Observer> observers;
+    private Channel channel;
 
-    public ScheduleWorker(List<Channel> channels, Cache cache){
-        this.channels = channels;
-        this.cache = cache;
+    public ScheduleWorker(Channel channel){
+        this.channel = channel;
+        observers = new ArrayList<Observer>();
+        this.schedules = new ArrayList<Schedule>();
     }
 
     @Override
-    protected HashMap<Channel, List<Schedule>> doInBackground() {
-        HashMap<Channel, List<Schedule>> schedulesMap = new HashMap<>();
-        for (Channel channel : channels) {
-            ScheduleParser scheduleParser = new ScheduleParser(channel, cache);
-            List<Schedule> schedules = scheduleParser.fetchSchedules();
-            schedulesMap.put(channel, schedules);
-        }
-        return schedulesMap;
+    protected ArrayList<Schedule> doInBackground()  {
+        ScheduleParser parser = new ScheduleParser(channel);
+        return parser.getScheduleList();
     }
 
     @Override
     protected void done() {
         try {
-            HashMap<Channel, List<Schedule>> fetchedSchedulesMap = get();
+            schedules = get();
+            notifyObservers();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void registerObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Observer o : observers) {
+           o.scheduleUpdate(channel,schedules);
         }
     }
 }

@@ -1,59 +1,48 @@
 package View;
-
 import javax.swing.*;
 import java.awt.*;
 
-
 public class ChannelView {
-    private JPanel channelPanel;
+
+    private final JPanel channelPane;
+
     private JScrollPane scrollChannel;
-    private JProgressBar spinner;
 
 
     public ChannelView() {
-        channelPanel = new JPanel(new GridBagLayout());
-        scrollChannel = new JScrollPane(channelPanel);
-        spinner = new JProgressBar();
-        spinner.setIndeterminate(true);
-        spinner.setStringPainted(true);
-        spinner.setString("Loading channels...");
-        scrollChannel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        channelPane = new JPanel();
+        JPanel panel = new JPanel();
+        channelPane.setLayout(new BoxLayout(channelPane, BoxLayout.Y_AXIS));
+        scrollChannel = new JScrollPane(channelPane);
+        JLabel label = new JLabel("Select A Channel Type");
+        panel.setLayout(new BorderLayout());
+        channelPane.add(panel);
+        label.setFont(new Font(label.getFont().getName(), Font.PLAIN, 30));
+        label.setForeground(Color.BLACK);
+        panel.add(label, BorderLayout.CENTER);
+        scrollChannel.setPreferredSize(new Dimension(320, 300));
     }
+
 
     public void addChannelButton(JButton channelButton) {
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.weightx = 1.0;
-        constraints.gridy = channelPanel.getComponentCount();
-        constraints.insets = new Insets(5, 10, 5, 10);
-        channelPanel.add(channelButton, constraints);
-        channelPanel.revalidate();
-        channelPanel.repaint();
-    }
-
-    public JScrollPane getScrollPane() {
-        return scrollChannel;
+        channelButton.setPreferredSize(new Dimension(280, 50));
+        channelButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 70));
+        channelPane.add(channelButton);
+        channelPane.revalidate();
+        channelPane.repaint();
     }
 
 
     public void clearChannelButtons() {
-        channelPanel.removeAll();
-        channelPanel.revalidate();
-        channelPanel.repaint();
+        channelPane.removeAll();
+        channelPane.revalidate();
+        channelPane.repaint();
     }
 
-    public void hideSpinner() {
-        spinner.setVisible(false);
-        channelPanel.revalidate();
-        channelPanel.repaint();
-    }
+
 
     public JScrollPane getScrollChannel() {
         return scrollChannel;
-    }
-
-    public JComponent getSpinner() {
-        return spinner; // assuming spinner is a member variable in ChannelView
     }
 
 
