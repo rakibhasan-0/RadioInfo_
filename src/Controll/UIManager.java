@@ -13,28 +13,22 @@ import java.util.HashSet;
 
 public class UIManager {
     private final ProgramView programView;
-    private final ChannelView channelView;
     private final MenuBarView menuBarView;
     private Channel selectedChannel;
     private final ChannelListener channelListener;
-    private final ShowMoreButtonListener showMoreButtonListener;
     private final ProgramDetails programDetails;
     private HashMap<String, ArrayList<Channel>> channelsWithTypes;
     private HashSet<String> types;
 
 
-    public UIManager(ProgramView programView, ChannelView channelView, MenuBarView menuBarView,
-                     ChannelListener channelListener, ShowMoreButtonListener showMoreButtonListener) {
+    public UIManager(ProgramView programView, MenuBarView menuBarView, ChannelListener channelListener) {
         this.programView = programView;
-        this.channelView = channelView;
         this.menuBarView = menuBarView;
         this.channelListener = channelListener;
-        this.showMoreButtonListener = showMoreButtonListener;
         programDetails = new ProgramDetails(programView);
     }
 
 
-    // it will create channel types in the menu bar.
     public void addChannelType() {
         JMenu channelTypeMenu = menuBarView.getChannelsTypeMenu();
         for (String types : types){
@@ -46,7 +40,7 @@ public class UIManager {
 
 
     public void displayChannels(String channelName){
-        channelView.clearChannelButtons();
+        programView.clearChannelButtons();
         ArrayList<Channel> channels = channelsWithTypes.get(channelName);
 
         for (Channel channel : channels) {
@@ -56,12 +50,13 @@ public class UIManager {
                 selectedChannel = channel;
                 channelListener.onChannelSelected(selectedChannel);
             });
-            channelView.addChannelButton(button);
+            programView.addChannelButton(button);
         }
     }
 
 
-    public void setupChannelButtons(HashSet<String> types, HashMap<String,ArrayList<Channel>>channelsWithTypes) {
+    public void setupChannelButtons(HashSet<String> types,
+                                    HashMap<String,ArrayList<Channel>>channelsWithTypes) {
         this.types = types;
         this.channelsWithTypes = channelsWithTypes;
         addChannelType();
@@ -94,7 +89,7 @@ public class UIManager {
         programView.getProgramTable().setModel(new DefaultTableModel(data, columnNames));
         programView.getProgramTable().getColumnModel().getColumn(0).setCellRenderer(new ButtonRenderer());
         programView.getProgramTable().getColumnModel().getColumn(0).setCellEditor(
-                new ButtonEditor(schedules, showMoreButtonListener)
+                new ButtonEditor(schedules, channelListener)
         );
 
         if (schedules.isEmpty()) {

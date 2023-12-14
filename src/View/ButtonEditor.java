@@ -1,6 +1,6 @@
 package View;
 
-import Controll.ShowMoreButtonListener;
+import Controll.ChannelListener;
 import Model.Schedule;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -9,12 +9,12 @@ import java.util.ArrayList;
 
 public class ButtonEditor extends AbstractCellEditor implements TableCellEditor{
     private JButton button;
-    private ShowMoreButtonListener listener;
+    private ChannelListener listener;
     private ArrayList<Schedule> schedules;
     private String label;
     private int row;
 
-    public ButtonEditor(ArrayList<Schedule> schedules, ShowMoreButtonListener buttonClickListener) {
+    public ButtonEditor(ArrayList<Schedule> schedules, ChannelListener buttonClickListener) {
         this.schedules = schedules;
         this.listener = buttonClickListener;
         this.button = new JButton();

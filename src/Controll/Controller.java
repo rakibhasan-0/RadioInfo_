@@ -1,15 +1,13 @@
 package Controll;
 import Model.*;
 import View.*;
-
 import javax.swing.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class Controller implements ChannelListener, ShowMoreButtonListener {
-    private final ChannelView channelView;
+public class Controller implements ChannelListener {
     private final ProgramView programView;
     private final MenuBarView menuBarView;
     private final Cache cache;
@@ -18,11 +16,10 @@ public class Controller implements ChannelListener, ShowMoreButtonListener {
     private UIManager uiManager;
     private APIManager apiManager;
 
-    public Controller(ChannelView channelView, MenuBarView menuBarView, ProgramView programView) {
-        this.channelView = channelView;
+    public Controller(MenuBarView menuBarView, ProgramView programView) {
         this.menuBarView = menuBarView;
         this.programView = programView;
-        this.uiManager = new UIManager(programView, channelView, menuBarView, this, this);
+        this.uiManager = new UIManager(programView, menuBarView, this);
         this.cache = new Cache();
         apiManager = new APIManager(this);
         apiManager.fetchChannelDataFromAPI();

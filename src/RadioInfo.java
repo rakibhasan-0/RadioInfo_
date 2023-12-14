@@ -11,20 +11,19 @@ public class RadioInfo {
     public RadioInfo() {
         JFrame frame = new JFrame("Radio Info");
         MenuBarView menuBarView = new MenuBarView();
-        ChannelView channelView = new ChannelView();
         ProgramView programView = new ProgramView();
         JPanel menuPanel = new JPanel();
-        menuPanel.add(channelView.getScrollChannel());
+        menuPanel.add(programView.getScrollChannel());
         menuPanel.add(programView.getProgramScrollPane());
         menuPanel.setLayout(new GridLayout(1, 2));
         menuPanel.add(programView.addCardPanel());
         initializeNorthPanel(frame, menuBarView);
         menuBarView.startClock();
-        Controller controller = new Controller(channelView, menuBarView,programView);
+        Controller controller = new Controller(menuBarView,programView);
         frame.setJMenuBar(menuBarView.getMenuBar());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900, 500);
-        frame.add(channelView.getScrollChannel(),BorderLayout.WEST);
+        frame.add(programView.getScrollChannel(),BorderLayout.WEST);
         frame.add(menuPanel, BorderLayout.CENTER);
         frame.setVisible(true);
     }
