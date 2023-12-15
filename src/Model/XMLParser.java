@@ -37,6 +37,7 @@ public class XMLParser {
         NodeList channelNodes = doc.getElementsByTagName("channel");
 
         for (int i = 0; i < channelNodes.getLength(); i++) {
+
             Element element = (Element) channelNodes.item(i);
             int id = Integer.parseInt(element.getAttribute("id"));
             String name = element.getAttribute("name");

@@ -2,13 +2,15 @@ package Model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 
 public class Schedule {
     private  String programName = null;
     private String description = null;
-    private LocalTime startTime = null;
-    private LocalTime endTime = null;
+    private String startTime = null;
+    private String endTime = null;
     private Image image = null;
 
     public String getProgramName() {
@@ -20,11 +22,11 @@ public class Schedule {
     }
 
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public LocalTime getEndTime() {
+    public  String getEndTime() {
         return endTime;
     }
 
@@ -40,11 +42,11 @@ public class Schedule {
         this.description = description;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime( String startTime) {
         this.startTime = startTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime( String endTime) {
         this.endTime = endTime;
     }
 

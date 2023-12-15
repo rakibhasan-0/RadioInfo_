@@ -11,9 +11,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ScheduleParser {
     private final ArrayList<Schedule> schedules = new ArrayList<Schedule>();
@@ -27,10 +30,6 @@ public class ScheduleParser {
         // which means that may need to fetch data from the previous or next day I guess.
         if(scheduleURL != null){
             try{
-                LocalTime now = LocalTime.now();
-                LocalTime sixHourBefore = now.minusHours(12);
-                LocalTime twelveHoursAfter = now.plusHours(12);
-                LocalTime cutOffTime = LocalTime.of(twelveHoursAfter.getHour(), 0);
                 scheduleURL = channel.getScheduleURL();
                 URL url = new URL(scheduleURL);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -53,17 +52,35 @@ public class ScheduleParser {
         }
     }
 
-    private void  processSchedule(Document document){
+    private void processSchedule(Document document) {
+
         NodeList nodeList = document.getElementsByTagName("scheduledepisode");
-        for(int i = 0; i < nodeList.getLength(); i++){
+
+        DateTimeFormatter parser = DateTimeFormatter.ISO_DATE_TIME;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        for (int i = 0; i < nodeList.getLength(); i++) {
+
             Element element = (Element) nodeList.item(i);
-            String programName = getElementTextContent(element,"title");
-            String description = getElementTextContent(element,"description");
-            String imageURL = getElementTextContent(element,"imageurl");
-            String starttimeutc = getElementTextContent(element,"starttimeutc");
-            String endtimeutc = getElementTextContent(element,"endtimeutc");
-            LocalTime startTime = LocalTime.parse(starttimeutc.substring(11, 19), DateTimeFormatter.ofPattern("HH:mm:ss"));
-            LocalTime endTime = LocalTime.parse(endtimeutc.substring(11, 19), DateTimeFormatter.ofPattern("HH:mm:ss"));
+            String programName = getElementTextContent(element, "title");
+            String description = getElementTextContent(element, "description");
+            String imageURL = getElementTextContent(element, "imageurl");
+            String starttimeutc = getElementTextContent(element, "starttimeutc");
+            String endtimeutc = getElementTextContent(element, "endtimeutc");
+
+            String startTime = null;
+
+            if (starttimeutc != null) {
+                ZonedDateTime startTimeZoned = ZonedDateTime.parse(starttimeutc, parser);
+                startTime  = startTimeZoned.format(formatter);
+            }
+            String endTime  = null;
+            if (endtimeutc != null) {
+                ZonedDateTime endTimeZoned = ZonedDateTime.parse(endtimeutc,parser);
+                endTime  = endTimeZoned.format(formatter);
+            }
+
+
             Schedule schedule = new ScheduleBuilder()
                     .setEndTime(endTime)
                     .setStartTime(startTime)
