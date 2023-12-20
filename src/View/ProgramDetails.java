@@ -1,4 +1,4 @@
-package Controll;
+package View;
 // it should be on View
 import Model.Schedule;
 import View.ProgramView;

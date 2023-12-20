@@ -157,7 +157,6 @@ public class Controller implements ChannelListener {
             uiManager.setScheduleIsUpdatingLabel(); // won't you update the uiMangerTable after fetching the data?
             apiManager.fetchScheduleForChannel(selectedChannel); // don't use any updates related task
         }
-
     }
 
 

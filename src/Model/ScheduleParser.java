@@ -32,7 +32,7 @@ public class ScheduleParser {
      *
      * It is a constructor of the ScheduleParser class, it will take the given channel to fetch
      * its schedules.
-     * @param channel
+     * @param channel the channel.
      */
     public ScheduleParser(Channel channel) {
         String scheduleURL = initializeScheduleURL(channel);
