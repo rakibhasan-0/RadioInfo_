@@ -48,6 +48,7 @@ public class UIManager {
             button.setIcon(channel.getIcon());
             button.addActionListener(e -> {
                 selectedChannel = channel;
+                System.out.println("Selected channel:"+channel.getChannelName());
                 channelListener.onChannelSelected(selectedChannel);
             });
             programView.addChannelButton(button);
@@ -55,8 +56,7 @@ public class UIManager {
     }
 
 
-    public void setupChannelButtons(HashSet<String> types,
-                                    HashMap<String,ArrayList<Channel>>channelsWithTypes) {
+    public void setupChannelButtons(HashSet<String> types, HashMap<String,ArrayList<Channel>>channelsWithTypes) {
         this.types = types;
         this.channelsWithTypes = channelsWithTypes;
         addChannelType();
@@ -69,8 +69,11 @@ public class UIManager {
 
 
     public void updateProgramTable(Channel channel, ArrayList<Schedule> schedules) {
+
         populateProgramTable(schedules);
         menuBarView.setSelectedChannelLabel(channel.getChannelName());
+
+
     }
 
 

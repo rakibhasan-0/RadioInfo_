@@ -8,17 +8,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class Controller implements ChannelListener {
-    private final ProgramView programView;
     private final MenuBarView menuBarView;
     private final Cache cache;
     private Channel selectedChannel;
     private Timer automaticUpdateTimer;
-    private UIManager uiManager;
-    private APIManager apiManager;
+    private final UIManager uiManager;
+    private final APIManager apiManager;
 
     public Controller(MenuBarView menuBarView, ProgramView programView) {
         this.menuBarView = menuBarView;
-        this.programView = programView;
         this.uiManager = new UIManager(programView, menuBarView, this);
         this.cache = new Cache();
         apiManager = new APIManager(this);
@@ -28,6 +26,7 @@ public class Controller implements ChannelListener {
 
     private void UpdateSchedule() {
         if (selectedChannel != null) {
+            System.out.println("Updating schedule from controller"+selectedChannel.getChannelName());
             uiManager.setScheduleIsUpdatingLabel();
             cache.clearCacheForAChannel(selectedChannel);
             apiManager.fetchScheduleForChannel(selectedChannel);
@@ -49,7 +48,6 @@ public class Controller implements ChannelListener {
         });
 
         menuBarView.addUpdateScheduleListener(e -> {
-            System.out.println("get clicked");
             UpdateSchedule();
         });
     }
@@ -81,26 +79,30 @@ public class Controller implements ChannelListener {
 
 
     public void getSchedule (Channel channel, ArrayList<Schedule> schedules) {
+        cache.addSchedules(channel, schedules);
         SwingUtilities.invokeLater(() -> {
-            cache.addSchedules(channel, schedules);
             selectedChannel  = channel;
             uiManager.updateProgramTable(channel, schedules);
             uiManager.setScheduleUpdatedLabel(channel.getChannelName());
         });
     }
 
+
     // it is just unecessary to make cache as normal; I mean you may not need to use it outside of the controller,
     @Override
     public void onChannelSelected(Channel channel) {
+
         ArrayList<Schedule> schedules = cache.getSchedules(channel);
+        selectedChannel = channel;
         if (schedules != null) {
-            uiManager.updateProgramTable(channel, schedules);
-            System.out.println("Schedule updated from selected");
+            SwingUtilities.invokeLater(() -> {
+                uiManager.updateProgramTable(channel, schedules);
+            });
         }else {
             uiManager.setScheduleIsUpdatingLabel();
-            apiManager.fetchScheduleForChannel(channel);
-            System.out.println("Schedule not updated from selected");
+            apiManager.fetchScheduleForChannel(channel); // don't use any updates related task
         }
+
     }
 
     @Override

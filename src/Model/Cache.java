@@ -1,11 +1,13 @@
 package Model;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Cache {
-    private final HashMap<Channel, ArrayList<Schedule>> caches;
+    private final Map<Channel, ArrayList<Schedule>> caches;
     public Cache() {
-        this.caches = new HashMap<>();
+        this.caches = Collections.synchronizedMap(new HashMap<>());
     }
     public void addSchedules(Channel channel, ArrayList<Schedule> schedules) {
         caches.put(channel, schedules);
