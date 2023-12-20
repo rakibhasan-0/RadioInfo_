@@ -1,22 +1,28 @@
 package Controll;
-
+// it should be on View
 import Model.Schedule;
 import View.ProgramView;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 
+/**
+ * That class is responsible for showing more details information about a program's schedule
+ * on the GUI.
+ */
 public class ProgramDetails{
 
     ProgramView programView;
-    public ProgramDetails(ProgramView programView){
+
+    public ProgramDetails(ProgramView programView) {
         this.programView = programView;
     }
 
+
+    /**
+     * That method is responsible for showing more information about a program's schedules details
+     * information on the GUI.
+     * @param schedule the program's schedule.
+     */
     public void showProgramDetails (Schedule schedule) {
         if (schedule == null) {
             JOptionPane.showMessageDialog(null, "No schedule details available.");
@@ -32,11 +38,16 @@ public class ProgramDetails{
                 displayProgramDetailsWithoutImage(programDetails);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: no stack trace.
 
         }
     }
 
+    /**
+     * Basically, that method gets all information of the channel and converts them to a string.
+     * @param schedule the schedule
+     * @return a string that contains the information of the program's schedules.
+     */
     private String formatProgramDetails(Schedule schedule) {
         return "<html>" +
                 "<b>Program Name:</b> " + schedule.getProgramName() + "<br><br>" +
@@ -46,6 +57,14 @@ public class ProgramDetails{
                 "</html>";
     }
 
+
+    /**
+     * It displays the program's schedule information such as stat time, end time,
+     * image on the gui. It utilizes the card layout in order to display the information.
+     *
+     * @param programDetails the program details of the program
+     * @param image image of the program.
+     */
 
     private void displayProgramDetailsWithImage(String programDetails, Image image) {
         programView.programDetailsPanel().removeAll();
@@ -57,10 +76,16 @@ public class ProgramDetails{
         JButton okButton = createOkButton();
         programView.programDetailsPanel().add(label, BorderLayout.CENTER);
         programView.programDetailsPanel().add(okButton, BorderLayout.SOUTH);
-
         showProgramDetailsCard();
     }
 
+    /**
+     * It displays the program's schedule information such as stat time, end time,
+     * on the gui. It utilizes the card layout in order to display the information.
+     * That method is used when a program has no image.
+     *
+     * @param programDetails the program details of the program
+     */
     private void displayProgramDetailsWithoutImage(String programDetails) {
         programView.programDetailsPanel().removeAll();
         JLabel label = new JLabel(programDetails);
@@ -70,6 +95,12 @@ public class ProgramDetails{
         showProgramDetailsCard();
     }
 
+
+    /**
+     * It creates a button, and whenever the button is clicked, it switches the panel by
+     * using the card layout.
+     * @return button.
+     */
     private JButton createOkButton() {
         JButton okButton = new JButton("OK");
         okButton.addActionListener(e -> {
@@ -79,6 +110,11 @@ public class ProgramDetails{
         return okButton;
     }
 
+
+    /**
+     * It uses the card layout to switch panel components on the GUI. It shows a program's
+     * schedule's details information.
+     */
     private void showProgramDetailsCard() {
         CardLayout layout = (CardLayout) programView.getCardPanel().getLayout();
         layout.show(programView.getCardPanel(), "programDetails");

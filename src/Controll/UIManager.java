@@ -69,11 +69,8 @@ public class UIManager {
 
 
     public void updateProgramTable(Channel channel, ArrayList<Schedule> schedules) {
-
         populateProgramTable(schedules);
         menuBarView.setSelectedChannelLabel(channel.getChannelName());
-
-
     }
 
 

@@ -4,6 +4,7 @@ import javax.swing.*;
 /**
  * That class represents the channel and its associated information such as channel name, id
  * icon, tag line and schudle url.
+ * @author Gazi Md Rakibul Haasan.
  */
 public class Channel {
     private String channelName;
