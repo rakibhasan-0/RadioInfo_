@@ -125,11 +125,15 @@ public class Controller implements ChannelListener {
     /**
      * That method will chache the given channel and its programs schedules.
      * It will be responsible for updating the GUI by showing those channels on UI.
+     * We made that method as synchronized so that we will get one thread's work done at
+     * a time.
      * @param channel the channel.
      * @param schedules the given channel's programs schedules.
      */
-    public void getSchedule (Channel channel, ArrayList<Schedule> schedules) {
+    public synchronized void getSchedule (Channel channel, ArrayList<Schedule> schedules) {
         cache.addSchedules(channel, schedules);
+        // We make sure that all UI-related updates will be occured on the EDT. It is
+        // the intention to use that method.
         SwingUtilities.invokeLater(() -> {
             selectedChannel  = channel;
             uiManager.updateProgramTable(channel, schedules);
@@ -154,8 +158,10 @@ public class Controller implements ChannelListener {
                 uiManager.updateProgramTable(channel, schedules);
             });
         }else {
-            uiManager.setScheduleIsUpdatingLabel(); // won't you update the uiMangerTable after fetching the data?
-            apiManager.fetchScheduleForChannel(selectedChannel); // don't use any updates related task
+            SwingUtilities.invokeLater(() -> {
+                uiManager.setScheduleIsUpdatingLabel(); // won't you update the uiMangerTable after fetching the data?
+                apiManager.fetchScheduleForChannel(selectedChannel); // don't use any updates related task
+            });
         }
     }
 

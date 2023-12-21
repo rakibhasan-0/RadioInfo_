@@ -7,15 +7,27 @@ import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.util.ArrayList;
 
+
+/**
+ * This is a custom TableCellEditor that places a JButton in a table cell.
+ * It allows for interactive buttons within the table cells.
+ * @author Gazi Md Rakibul Hasan
+ */
+
 public class ButtonEditor extends AbstractCellEditor implements TableCellEditor{
-    private JButton button;
-    private ChannelListener listener;
-    private ArrayList<Schedule> schedules;
+    private final JButton button;
+    private final ChannelListener listener;
     private String label;
     private int row;
 
+    /**
+     * Constructor for ButtonEditor.
+     *
+     * @param schedules An ArrayList of Schedule objects
+     *                  it used to determine the action on button click.
+     * @param buttonClickListener The listener that handles button click events.
+     */
     public ButtonEditor(ArrayList<Schedule> schedules, ChannelListener buttonClickListener) {
-        this.schedules = schedules;
         this.listener = buttonClickListener;
         this.button = new JButton();
         this.button.setOpaque(true);

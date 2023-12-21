@@ -3,6 +3,11 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
+
+/**
+ * This class allows each cell of the table to be displayed as a button.
+ */
+
 public class ButtonRenderer extends JButton implements TableCellRenderer {
     public ButtonRenderer() {
         setOpaque(true);

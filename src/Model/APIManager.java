@@ -10,9 +10,7 @@ import java.util.HashSet;
  * that class is responsible for fetching channels, channel's program schedules.
  */
 public class APIManager implements Observer {
-    private Controller controller;
-
-
+    private final Controller controller;
 
     public APIManager( Controller controller) {
         this.controller = controller;
@@ -32,7 +30,7 @@ public class APIManager implements Observer {
 
 
     /**
-     * It get called whenever the program's schedule is updated. Then it notifies the Controller
+     * It gets called whenever the program's schedule is updated. Then it notifies the Controller
      * with the updated schedule data.
      * @param channel The channel whose schedule has been updated.
      * @param schedules The updated list of schedules for the channel.
