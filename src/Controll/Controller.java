@@ -123,7 +123,7 @@ public class Controller implements ChannelListener {
 
 
     /**
-     * That method will chache the given channel and its programs schedules.
+     * That method will chache the given channel and its program schedules.
      * It will be responsible for updating the GUI by showing those channels on UI.
      * We made that method as synchronized so that we will get one thread's work done at
      * a time.
@@ -143,10 +143,10 @@ public class Controller implements ChannelListener {
 
 
     /**
-     * It responsible for updating the GUI by showing the selected channel's programs schedules
-     * on the GUI. It tries to utilize the cache. If the information of the given channel is not
-     * cached then it will fetch data from the API.
-     * @param channel the selected channel.
+     *  It responsible for updating the GUI by showing the selected channel's programs schedules
+     *  on the GUI. It tries to utilize the cache. If the information of the given channel is not
+     *  cached, then it will fetch data from the API.
+     *  @param channel the selected channel.
      */
     @Override
     public void onChannelSelected(Channel channel) {
