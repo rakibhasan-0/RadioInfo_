@@ -67,4 +67,11 @@ public class Cache {
             caches.remove(channel);
         }
     }
+
+    /*
+    * for the testing purposes
+     */
+    public boolean isEmpty(){
+        return caches.isEmpty();
+    }
 }

@@ -3,14 +3,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -24,14 +20,36 @@ import java.util.ArrayList;
  */
 public class XMLParser {
     private final ArrayList<Channel> channels = new ArrayList<Channel>();
+
     public XMLParser() {
         initiateParsingOfXML();
+    }
+
+    /**
+     * It used for the testing usage.
+     */
+    public XMLParser(HttpURLConnection mockConnection) {
+        try {
+            mockConnection.setRequestMethod("GET");
+            if (mockConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document doc = builder.parse(mockConnection.getInputStream());
+                doc.normalize();
+                processChannels(doc);
+            } else {
+                System.err.println("Error: HTTP request failed with code " + mockConnection.getResponseCode()); // show that on the JOPtion.Pane()
+            }
+        }
+        catch (Exception e) {
+             manageErrors(e);
+        }
     }
 
 
     /**
      * That method initiates the parsing of the XML file, It will use the DOM parser to
-     * parse the XML file.
+     * parse the XML file. it made public for the testing purposes.
      */
     private void initiateParsingOfXML() {
         String baseUrl = "http://api.sr.se/api/v2/channels?pagination=false";
@@ -46,7 +64,7 @@ public class XMLParser {
                 doc.normalize();
                 processChannels(doc);
             } else {
-                System.err.println("Error: HTTP request failed with code " + connection.getResponseCode());
+                System.err.println("Error: HTTP request failed with code " + connection.getResponseCode()); // show that on the JOPtion.Pane()
             }
         }catch (Exception e) {
 

@@ -7,18 +7,16 @@ import java.awt.*;
  * This class reponsible for showing the table that holds information about the selected
  * channel's information on the GUI. At the same time, it will be responsible for displaying
  * a specific program's detailed information.
- * @author Gazi Md Rakibul Hasan.
  */
 public class ProgramView{
     private JTable programTable;
     private JScrollPane programScrollPane;
     private  JPanel cardPanel;
-    JPanel programDetailsPanel;
+    private JPanel programDetailsPanel;
     private  JPanel channelPane;
     private JScrollPane scrollChannel;
 
     public ProgramView() {
-
         channelPane = new JPanel();
         JPanel panel = new JPanel();
         channelPane.setLayout(new BoxLayout(channelPane, BoxLayout.Y_AXIS));
@@ -38,7 +36,6 @@ public class ProgramView{
         };
         programTable.setRowHeight(30);
         programScrollPane = new JScrollPane(programTable);
-
     }
 
     /**
@@ -114,11 +111,27 @@ public class ProgramView{
         channelPane.repaint();
     }
 
+
+    /**
+     * Used for the testing purposes.
+     * @return
+     */
+    public JPanel getPogramDetailsPanel(){
+        return programDetailsPanel;
+    }
     /**
      * A panles that stotres all displaying channel on the GUI.
      * @return a scrollable panel.
      */
     public JScrollPane getScrollChannel() {
         return scrollChannel;
+    }
+
+    /**
+     * For the testing purposes.
+     * @return
+     */
+    public JPanel getChannelPane() {
+        return channelPane;
     }
 }

@@ -19,6 +19,9 @@ public class Controller implements ChannelListener {
     private Timer automaticUpdateTimer;
     private final UIManager uiManager;
     private final APIManager apiManager;
+    private static final int DEFAULT_UPDATE_INTERVAL = 60 * 60 * 1000;
+    private int updateInterval = DEFAULT_UPDATE_INTERVAL;
+    private  HashMap<String,ArrayList<Channel>> channelWithTypeForTesting = new HashMap<String,ArrayList<Channel>>();
 
 
     /**
@@ -35,6 +38,38 @@ public class Controller implements ChannelListener {
         apiManager.fetchChannelDataFromAPI();
         setupMenuListeners();
     }
+
+    /**
+     *  for the testing purposes
+     */
+    public void setUpdateInterval(int intervalMillis) {
+        this.updateInterval = intervalMillis;
+    }
+
+    /**
+     * for the testing purposes
+     */
+    public APIManager getApiManager(){
+        return this.apiManager;
+    }
+
+    /**
+     * for the testing purposes
+     */
+    public boolean cacheContains(Channel channel) {
+        ArrayList<Schedule> schedules = cache.getSchedules(channel);
+        return schedules != null && !schedules.isEmpty();
+    }
+
+    /**
+     * for the testing purposes
+     */
+    public Cache getCache(){
+        return this.cache;
+    }
+
+
+
 
 
     /**
@@ -96,8 +131,8 @@ public class Controller implements ChannelListener {
      * channel and program schedules. This update occurs every hour by clearing
      * cache and fetches data from the API.
      */
-    private void startAutomaticUpdates() {
-        automaticUpdateTimer = new Timer(60 * 60 * 1000, e -> {
+    public void startAutomaticUpdates() {
+        automaticUpdateTimer = new Timer(updateInterval, e -> {
             menuBarView.setCurrentTimeLabel(LocalDateTime.now());
             cache.clearCache();
             apiManager.fetchChannelDataFromAPI();
@@ -113,12 +148,22 @@ public class Controller implements ChannelListener {
      * @param channelWithType A map that contains categories and its corresponding channels.
      */
     public void updatedChannels (HashSet<String> types, HashMap<String,ArrayList<Channel>> channelWithType) {
+
+        channelWithTypeForTesting = channelWithType;
+
         SwingUtilities.invokeLater(() -> {
             cache.clearCache();
             uiManager.setupChannelButtons(types,channelWithType);
             uiManager.setChannelUpdatedLabel();
             resetAutomaticUpdates();
         });
+    }
+
+    /**
+     * get chennels, it has been used for the testing
+     */
+    public HashMap<String, ArrayList<Channel>> getChannels(){
+        return this.channelWithTypeForTesting;
     }
 
 
@@ -152,6 +197,7 @@ public class Controller implements ChannelListener {
     public void onChannelSelected(Channel channel) {
         // Array list will be concern of the thread safety in that case.
         ArrayList<Schedule> schedules = cache.getSchedules(channel);
+
         selectedChannel = channel;
         if (schedules != null) {
             SwingUtilities.invokeLater(() -> {

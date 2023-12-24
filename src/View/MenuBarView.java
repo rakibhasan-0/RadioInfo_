@@ -134,4 +134,20 @@ public class MenuBarView {
     public JMenu getChannelsTypeMenu() {
         return channelTypes;
     }
+
+
+
+    /**
+     * For the testing purpose only
+     */
+    public JLabel getCurrentTimeLabel() {
+        return currentTimeLabel;
+    }
+
+    /**
+     * For the testing purpose only
+     */
+    public JLabel getSelectedChannelLabel(){
+        return selectedChannelLabel;
+    }
 }

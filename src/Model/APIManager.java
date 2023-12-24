@@ -11,23 +11,65 @@ import java.util.HashSet;
  */
 public class APIManager implements Observer {
     private final Controller controller;
+    private final HashSet<String> channelCategory = new HashSet<String>();
+    private  final HashMap <String, ArrayList<Channel>> channelWithCategory = new HashMap <String, ArrayList<Channel>>();
+    private ArrayList<Channel> channels; // for the testing purposes
 
     public APIManager( Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * for the testing purposes
+     */
+    public ArrayList<Channel> getChannels() {
+        return channels;
+    }
 
     /**
      * That method invoked when channels has fetched from the API.
      * Thereafter, it notifies the Controller with the data.
-     * @param channelsType A set of channel types.
-     * @param channelsWithtype A map of channels categorized by their types.
+     * @param channels The list of channels.
      */
     @Override
-    public void channelUpdate(HashSet<String> channelsType, HashMap<String, ArrayList<Channel>> channelsWithtype) {
-        controller.updatedChannels(channelsType, channelsWithtype);
+    public void channelUpdate(ArrayList<Channel> channels) {
+        this.channels = channels;
+        creatingChannelWithCategory(channels);
+        getTotalCategory(channels);
+        controller.updatedChannels(channelCategory,  channelWithCategory);
     }
 
+
+
+    /**
+     * It will retrive the total categories that exist.
+     * @param channels the list of channels.
+     */
+    private void getTotalCategory(ArrayList<Channel> channels) {
+        for(Channel channel : channels) {
+            if (!channelCategory.contains(channel.getChannelType())){
+                //System.out.println("----------------");
+                //System.out.println(channel.getChannelType());
+                channelCategory.add(channel.getChannelType());
+                channelWithCategory.put(channel.getChannelType(), new ArrayList<>());
+            }
+        }
+    }
+
+
+
+    /**
+     * It alligns the channels with its category.
+     * @param channels list of channels.
+     */
+    private void creatingChannelWithCategory(ArrayList<Channel> channels) {
+        for (Channel channel : channels) {
+            ArrayList<Channel> channelList = channelWithCategory.get(channel.getChannelType());
+            if (channelList != null) {
+                channelList.add(channel);
+            }
+        }
+    }
 
     /**
      * It gets called whenever the program's schedule is updated. Then it notifies the Controller

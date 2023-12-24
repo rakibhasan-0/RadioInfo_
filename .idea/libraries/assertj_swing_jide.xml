@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="assertj.swing.jide" type="repository">
+    <properties maven-id="org.assertj:assertj-swing-jide:3.1.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/assertj-swing-jide-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/slf4j-api-1.7.16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/assertj-swing-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/assertj-core-3.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/fest-util-1.2.5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -40,6 +41,30 @@ public class ScheduleParser {
             fetchDataBasedOnTime(channel);
         }
     }
+
+    /**
+     * For the testing purpose
+     */
+    public void fetchChannelScedule(HttpURLConnection scheduleURL) throws IOException, ParserConfigurationException, SAXException {
+        scheduleURL.setRequestMethod("GET");
+        if(scheduleURL.getResponseCode() == HttpURLConnection.HTTP_OK){
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+            Document doc = documentBuilder.parse(scheduleURL.getInputStream());
+            doc.normalize();
+            processSchedule(doc);
+        }else {
+            System.err.println("Error: HTTP request failed with code " + scheduleURL.getResponseCode()); // show that on the JOPtion.Pane()
+        }
+    }
+
+
+
+
+
+
+
+
 
     /**
      * That mehtod initialize the given channel's url and calculate time frame

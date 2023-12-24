@@ -11,7 +11,7 @@ import java.util.HashSet;
  * channel get updated/fetched from the API.
  */
 public interface Observer {
-    void channelUpdate(HashSet<String> channelType, HashMap<String, ArrayList<Channel>> channelsWithtypes);
+    void channelUpdate(ArrayList<Channel> channels);
     void scheduleUpdate(Channel channel, ArrayList<Schedule> schedule);
 }
 

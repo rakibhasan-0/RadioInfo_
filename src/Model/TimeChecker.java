@@ -92,7 +92,7 @@ public class TimeChecker {
      * A getter method to get the lower bound of the time
      * @return the lower bound which represented in Zoned date and time format.
      */
-    ZonedDateTime getTwelveHoursFromBackward() {
+    public ZonedDateTime getTwelveHoursFromBackward() {
         return lowerTimeRange;
     }
 
@@ -100,7 +100,7 @@ public class TimeChecker {
      * A getter method to get the upper bound of the time
      * @return the upper bound which represented in Zoned date and time format.
      */
-    ZonedDateTime getTwelveHoursFromAfterwards() {
+    public ZonedDateTime getTwelveHoursFromAfterwards() {
         return upperTimeRange;
     }
 

@@ -15,8 +15,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class XMLParserWorker extends SwingWorker<ArrayList<Channel>,Void> implements Subject {
     private final ArrayList<Observer> observers = new ArrayList<Observer>();
-    private final HashSet<String> channelCategory = new HashSet<String>();
-    private  final HashMap <String, ArrayList<Channel>> channelWithCategory = new HashMap <String, ArrayList<Channel>>();;
+    private  ArrayList <Channel> channels;
 
 
     /**
@@ -39,9 +38,7 @@ public class XMLParserWorker extends SwingWorker<ArrayList<Channel>,Void> implem
     @Override
     protected void done() {
         try {
-            ArrayList<Channel> channels = get();
-            getTotalCategory(channels);
-            creatingChannelWithCategory(channels);
+            this.channels = get();
             notifyObservers();
         } catch (InterruptedException e) {
             JOptionPane.showMessageDialog(null, "The operation was interrupted. Please try again.");
@@ -50,37 +47,6 @@ public class XMLParserWorker extends SwingWorker<ArrayList<Channel>,Void> implem
         }
     }
 
-
-
-    /**
-     * It will retrive the total categories that exist.
-     * @param channels the list of channels.
-     */
-    private void getTotalCategory(ArrayList<Channel> channels) {
-        for(Channel channel : channels) {
-            if (!channelCategory.contains(channel.getChannelType())){
-                //System.out.println("----------------");
-                //System.out.println(channel.getChannelType());
-                channelCategory.add(channel.getChannelType());
-                channelWithCategory.put(channel.getChannelType(), new ArrayList<>());
-            }
-        }
-    }
-
-
-
-    /**
-     * It alligns the channels with its category.
-     * @param channels list of channels.
-     */
-    private void creatingChannelWithCategory(ArrayList<Channel> channels) {
-        for (Channel channel : channels) {
-            ArrayList<Channel> channelList = channelWithCategory.get(channel.getChannelType());
-            if (channelList != null) {
-                channelList.add(channel);
-            }
-        }
-    }
 
 
 
@@ -111,7 +77,7 @@ public class XMLParserWorker extends SwingWorker<ArrayList<Channel>,Void> implem
     @Override
     public void notifyObservers() {
         for(Observer o : observers){
-            o.channelUpdate(channelCategory,channelWithCategory);
+            o.channelUpdate(channels);
         }
     }
 }

@@ -68,7 +68,6 @@ public class ProgramDetails{
 
     private void displayProgramDetailsWithImage(String programDetails, Image image) {
         programView.programDetailsPanel().removeAll();
-
         ImageIcon imageIcon = new ImageIcon(image);
         JLabel label = new JLabel();
         label.setText(programDetails);

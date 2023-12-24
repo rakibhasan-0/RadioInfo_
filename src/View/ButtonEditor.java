@@ -1,5 +1,4 @@
 package View;
-
 import Controll.ChannelListener;
 import Model.Schedule;
 import javax.swing.*;
