@@ -45,9 +45,7 @@ public class MenuBarView {
      * Getter method to get the JMenuBar instance.
      * @return the JMenuBar instance.
      */
-    public JMenuBar getMenuBar() {
-        return this.menuBar;
-    }
+
 
     /**
      * Getter method to get the JLabel which will be used to display
@@ -67,6 +65,12 @@ public class MenuBarView {
         updateChannelListener.addActionListener(listener);
     }
 
+    /**
+     * for the test purpose
+     */
+    public JMenuBar getMenuBar() {
+        return menuBar;
+    }
 
     /**
      * It adds listeners to the schedule update menu item.

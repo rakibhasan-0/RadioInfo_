@@ -61,13 +61,12 @@ public class UIManager {
     public void displayChannels(String channelType){
         programView.clearChannelButtons();
         ArrayList<Channel> channels = channelsWithTypes.get(channelType);
-
         for (Channel channel : channels) {
             JButton button = new JButton(channel.getChannelName());
             button.setIcon(channel.getIcon());
             button.addActionListener(e -> {
                 selectedChannel = channel;
-                System.out.println("Selected channel:"+channel.getChannelName());
+                //System.out.println("Selected channel:"+channel.getChannelName());
                 channelListener.onChannelSelected(selectedChannel);
             });
             programView.addChannelButton(button);

@@ -2,18 +2,18 @@ package View;
 import javax.swing.*;
 import java.awt.*;
 
-
 /**
  * This class reponsible for showing the table that holds information about the selected
  * channel's information on the GUI. At the same time, it will be responsible for displaying
  * a specific program's detailed information.
  */
+
 public class ProgramView{
     private JTable programTable;
     private JScrollPane programScrollPane;
     private  JPanel cardPanel;
     private JPanel programDetailsPanel;
-    private  JPanel channelPane;
+    private final JPanel channelPane;
     private JScrollPane scrollChannel;
 
     public ProgramView() {
@@ -114,7 +114,6 @@ public class ProgramView{
 
     /**
      * Used for the testing purposes.
-     * @return
      */
     public JPanel getPogramDetailsPanel(){
         return programDetailsPanel;
@@ -129,7 +128,6 @@ public class ProgramView{
 
     /**
      * For the testing purposes.
-     * @return
      */
     public JPanel getChannelPane() {
         return channelPane;

@@ -53,13 +53,7 @@ public class Controller implements ChannelListener {
         return this.apiManager;
     }
 
-    /**
-     * for the testing purposes
-     */
-    public boolean cacheContains(Channel channel) {
-        ArrayList<Schedule> schedules = cache.getSchedules(channel);
-        return schedules != null && !schedules.isEmpty();
-    }
+
 
     /**
      * for the testing purposes
@@ -67,9 +61,6 @@ public class Controller implements ChannelListener {
     public Cache getCache(){
         return this.cache;
     }
-
-
-
 
 
     /**
@@ -148,15 +139,15 @@ public class Controller implements ChannelListener {
      * @param channelWithType A map that contains categories and its corresponding channels.
      */
     public void updatedChannels (HashSet<String> types, HashMap<String,ArrayList<Channel>> channelWithType) {
-
         channelWithTypeForTesting = channelWithType;
-
         SwingUtilities.invokeLater(() -> {
             cache.clearCache();
             uiManager.setupChannelButtons(types,channelWithType);
             uiManager.setChannelUpdatedLabel();
             resetAutomaticUpdates();
         });
+
+
     }
 
     /**
@@ -177,8 +168,6 @@ public class Controller implements ChannelListener {
      */
     public synchronized void getSchedule (Channel channel, ArrayList<Schedule> schedules) {
         cache.addSchedules(channel, schedules);
-        // We make sure that all UI-related updates will be occured on the EDT. It is
-        // the intention to use that method.
         SwingUtilities.invokeLater(() -> {
             selectedChannel  = channel;
             uiManager.updateProgramTable(channel, schedules);
@@ -195,9 +184,7 @@ public class Controller implements ChannelListener {
      */
     @Override
     public void onChannelSelected(Channel channel) {
-        // Array list will be concern of the thread safety in that case.
         ArrayList<Schedule> schedules = cache.getSchedules(channel);
-
         selectedChannel = channel;
         if (schedules != null) {
             SwingUtilities.invokeLater(() -> {

@@ -1,6 +1,8 @@
 package Model;
 import Controll.Controller;
 import Controll.Observer;
+
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,9 +13,9 @@ import java.util.HashSet;
  */
 public class APIManager implements Observer {
     private final Controller controller;
-    private final HashSet<String> channelCategory = new HashSet<String>();
-    private  final HashMap <String, ArrayList<Channel>> channelWithCategory = new HashMap <String, ArrayList<Channel>>();
-    private ArrayList<Channel> channels; // for the testing purposes
+
+    private ArrayList<Channel> channels;
+    private   HashMap <String, ArrayList<Channel>> channelWithCategory = new HashMap<String, ArrayList<Channel>>();
 
     public APIManager( Controller controller) {
         this.controller = controller;
@@ -34,25 +36,30 @@ public class APIManager implements Observer {
     @Override
     public void channelUpdate(ArrayList<Channel> channels) {
         this.channels = channels;
-        creatingChannelWithCategory(channels);
-        getTotalCategory(channels);
-        controller.updatedChannels(channelCategory,  channelWithCategory);
+        HashSet<String> channelCategory = new HashSet<String>();
+        HashMap <String, ArrayList<Channel>> channelWithCategory = new HashMap<String, ArrayList<Channel>>();
+        System.out.println("Size of the channel"+ channels.size());
+        creatingChannelWithCategory(channelWithCategory);
+        getTotalCategory(channelCategory);
+        this.channelWithCategory = channelWithCategory;
+        controller.updatedChannels(channelCategory, channelWithCategory);
     }
 
+    /**
+     * for the testing purpose
+     */
+    public HashMap<String,ArrayList<Channel>> getTheChannelsWithCategory(){
+        return channelWithCategory;
+    }
 
 
     /**
      * It will retrive the total categories that exist.
-     * @param channels the list of channels.
+     * @param channelCategory it is a set where all channels categories will be stored.
      */
-    private void getTotalCategory(ArrayList<Channel> channels) {
-        for(Channel channel : channels) {
-            if (!channelCategory.contains(channel.getChannelType())){
-                //System.out.println("----------------");
-                //System.out.println(channel.getChannelType());
-                channelCategory.add(channel.getChannelType());
-                channelWithCategory.put(channel.getChannelType(), new ArrayList<>());
-            }
+    private void getTotalCategory(HashSet<String> channelCategory) {
+        for(Channel channel : this.channels) {
+            channelCategory.add(channel.getChannelType());
         }
     }
 
@@ -60,14 +67,18 @@ public class APIManager implements Observer {
 
     /**
      * It alligns the channels with its category.
-     * @param channels list of channels.
+     *
+     * @param channelWithCategory a map where the channels and with its corresponding category
+     *                            will be stored.
      */
-    private void creatingChannelWithCategory(ArrayList<Channel> channels) {
-        for (Channel channel : channels) {
+    private void creatingChannelWithCategory(HashMap <String, ArrayList<Channel>> channelWithCategory){
+        for (Channel channel : this.channels) {
             ArrayList<Channel> channelList = channelWithCategory.get(channel.getChannelType());
-            if (channelList != null) {
-                channelList.add(channel);
+            if (channelList == null) {
+                channelList = new ArrayList<>();
             }
+            channelList.add(channel);
+            channelWithCategory.put(channel.getChannelType(),channelList);
         }
     }
 
