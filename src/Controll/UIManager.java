@@ -37,6 +37,12 @@ public class UIManager {
         programDetails = new ProgramDetails(programView);
     }
 
+    /**
+     * for the testing purpose
+     */
+    public JLabel getDesctiptiopnLabel() {
+        return programDetails.getDescriptionLabel();
+    }
 
     /**
      * It adds channel types on the given menu. Those channel types will be added as

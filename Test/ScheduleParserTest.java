@@ -3,7 +3,6 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,12 +12,11 @@ import static org.mockito.Mockito.when;
 
 public class ScheduleParserTest {
 
-
     @Test
     public void testParsingSingleScheduleProgram() throws Exception {
 
         ZonedDateTime currentTimeStart = ZonedDateTime.now().withZoneSameInstant(ZoneOffset.UTC);
-        ZonedDateTime currentTimeEnd = currentTimeStart.plusMinutes(30); // For example, 30 minutes later
+        ZonedDateTime currentTimeEnd = currentTimeStart.plusMinutes(30);
 
         String startTime = "<starttimeutc>" + currentTimeStart.format(DateTimeFormatter.ISO_DATE_TIME) + "</starttimeutc>";
         String endTime = "<endtimeutc>" + currentTimeEnd.format(DateTimeFormatter.ISO_DATE_TIME) + "</endtimeutc>";
@@ -37,21 +35,16 @@ public class ScheduleParserTest {
         HttpURLConnection mockConnection = mock(HttpURLConnection.class);
         when(mockConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
         when(mockConnection.getInputStream()).thenReturn(new ByteArrayInputStream(xmlContent.getBytes(StandardCharsets.UTF_8)));
-
-        // Mock the channel to provide the mock URL
         Channel mockChannel = mock(Channel.class);
         when(mockChannel.getScheduleURL()).thenReturn("http://example.com/schedule");
 
-        // Create an instance of ScheduleParser with the mocked channel
         ScheduleParser parser = new ScheduleParser(mockChannel);
-        parser.fetchChannelScedule(mockConnection); // You might need to adjust this line based on your actual method signature
+        parser.fetchChannelScedule(mockConnection);
 
-        // Verify that the schedules list is populated correctly
         assertFalse(parser.getScheduleList().isEmpty(), "Schedules list should not be empty");
         Schedule schedule = parser.getScheduleList().get(0);
         assertEquals("Ekonyheter", schedule.getProgramName(), "Program name should match");
         assertEquals("Hello World",schedule.getDescription(), "Description should match");
-        // Add more assertions as needed
     }
 
     @Test

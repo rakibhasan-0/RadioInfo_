@@ -38,7 +38,6 @@ public class APIManager implements Observer {
         this.channels = channels;
         HashSet<String> channelCategory = new HashSet<String>();
         HashMap <String, ArrayList<Channel>> channelWithCategory = new HashMap<String, ArrayList<Channel>>();
-        System.out.println("Size of the channel"+ channels.size());
         creatingChannelWithCategory(channelWithCategory);
         getTotalCategory(channelCategory);
         this.channelWithCategory = channelWithCategory;
@@ -90,6 +89,7 @@ public class APIManager implements Observer {
      */
     @Override
     public void scheduleUpdate(Channel channel, ArrayList<Schedule> schedules) {
+        System.out.println("Scheduling update/ we are getting the schedule");
         controller.getSchedule(channel, schedules);
     }
 

@@ -74,4 +74,7 @@ public class Cache {
     public boolean isEmpty(){
         return caches.isEmpty();
     }
+
+
+
 }

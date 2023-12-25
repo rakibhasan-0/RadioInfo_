@@ -210,4 +210,13 @@ public class Controller implements ChannelListener {
         //uiManager.setScheduleUpdatedLabel();
     }
 
+
+    /**
+     * for the testing purposes
+     */
+
+    public JLabel getDescriptionLabelFromTable(){
+        return uiManager.getDesctiptiopnLabel();
+    }
+
 }

@@ -11,7 +11,8 @@ import java.awt.*;
  */
 public class ProgramDetails{
 
-    ProgramView programView;
+    private ProgramView programView;
+    private JLabel descriptionLabel;
 
     public ProgramDetails(ProgramView programView) {
         this.programView = programView;
@@ -69,14 +70,23 @@ public class ProgramDetails{
     private void displayProgramDetailsWithImage(String programDetails, Image image) {
         programView.programDetailsPanel().removeAll();
         ImageIcon imageIcon = new ImageIcon(image);
-        JLabel label = new JLabel();
-        label.setText(programDetails);
-        label.setIcon(imageIcon);
+        descriptionLabel = new JLabel();
+        descriptionLabel.setText(programDetails);
+        descriptionLabel.setIcon(imageIcon);
         JButton okButton = createOkButton();
-        programView.programDetailsPanel().add(label, BorderLayout.CENTER);
+        programView.programDetailsPanel().add(descriptionLabel, BorderLayout.CENTER);
         programView.programDetailsPanel().add(okButton, BorderLayout.SOUTH);
         showProgramDetailsCard();
     }
+
+    /**
+     * for the testing purposes
+     */
+    public JLabel getDescriptionLabel(){
+        return descriptionLabel;
+    }
+
+
 
     /**
      * It displays the program's schedule information such as stat time, end time,

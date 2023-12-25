@@ -19,6 +19,7 @@ public class ButtonEditor extends AbstractCellEditor implements TableCellEditor{
     private String label;
     private int row;
 
+
     /**
      * Constructor for ButtonEditor.
      *
@@ -49,6 +50,10 @@ public class ButtonEditor extends AbstractCellEditor implements TableCellEditor{
         label = (value == null) ? "" : value.toString();
         button.setText(label);
         this.row = row;
+        return button;
+    }
+
+    public JButton getButtonEditor() {
         return button;
     }
 
